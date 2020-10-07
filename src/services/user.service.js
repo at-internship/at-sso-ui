@@ -1,5 +1,6 @@
 const axios = require("axios");
-const AT_SSO_SERVICE_URI = "https://at-sso-api.herokuapp.com/api/v1/user";
+const config = require("../config");
+const AT_SSO_SERVICE_URI = config.AT_SSO_SERVICE_URI;
 
 const userService = {};
 
