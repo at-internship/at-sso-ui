@@ -1,15 +1,17 @@
-const { response } = require("express");
-const UserServiceApi = require("../services/user.service");
-const TestUser = {};
+const userServiceAPI = require('../services/user.service');
 
-TestUser.UserServiceApi = async(req, res) => {
-    const responseUserService = await UserServiceApi.getAllUsers();
-    console.log("UserServiceApi.getAllUsers");
-    console.log(responseUserService);
-};
+const userCtrl = {};
 
-TestUser.UserServiceApi = async(req, res) => {
-    const {id, name, firstName, lastName, email, password, status} = UserServiceApi.CreateUser();
+console.log(userCtrl);
+
+// Get All users 
+userCtrl.dashboard = async(req, res) => {
+    const responseUsers = await userServiceAPI.getAllUsers();
+    console.log("userCtrl.dashboard.getAllUsers");
+    console.log(responseUsers.data);
+    const users = responseUsers.data;
 }
 
-module.exports = TestUser; 
+console.log(userCtrl.dashboard);
+
+module.exports = userCtrl;
