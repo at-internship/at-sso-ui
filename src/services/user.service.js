@@ -1,52 +1,43 @@
-const { default: Axios } = require("axios")
+const axios = require("axios");
 
-const axios = require ("axios");
-const USERS_SERVICE_URI = "https://at-sso-api.herokuapp.com/api/v1/user";
+const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
+console.log("AT_SSO_SERVICE_URI:" + AT_SSO_SERVICE_URI);
 
-console.log("USERS_SERVICE_URI:"+ USERS_SERVICE_URI )
+const userService = {};
 
-//Metodo 2
-/*const userService = {};
-
-userService.getAllUsers = () =>{
-    return axios ({
+userService.getUsers = function() {
+    return new Promise((resolve, reject) => axios({
         method: "GET",
-        url: USERS_SERVICE_URI,
+        url: AT_SSO_SERVICE_URI + `/v1/user`,
         headers: {
             "content-type": "application/json"
         },
-
-    });
+    }).then(response => {
+        resolve(
+            response.data
+        )
+    }).catch(err => {
+        reject({
+            err
+        })
+    }))
 };
 
-module.exports = userService;
-*/
-
-//metodo 1
 module.exports = {
-    getAllUsers: () => 
-    axios({
-        method: "GET",
-        url: USERS_SERVICE_URI,
-        headers: {
-            "content-type": "application/json",
-        },
-    })
-}
-
-module.exports = {
-    CreateUser: () => 
-    axios({
-        method: "POST",
-        url: USERS_SERVICE_URI,
-        data: {
-            id: 'ObjectID',
-            name: 'String',
-            firstName: 'String',
-            lastName: 'String',
-            email: 'String',
-            password: 'String (hash)',
-            status: 'Integer 0,1',
-        },
-    })
+    CreateUser: () => {
+        axios({
+            method: "POST",
+            url: AT_SSO_SERVICE_URI + `/v1/user`,
+            data: {
+                id: 'ObjectID',
+                name: 'String',
+                firstName: 'String',
+                lastName: 'String',
+                email: 'String',
+                password: 'String (hash)',
+                status: 'Integer 0,1',
+            },
+        })
+    },
+    userService
 }
