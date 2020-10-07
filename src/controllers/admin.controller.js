@@ -22,12 +22,12 @@ adminCtrl.renderIndexAdmin = async function (req, res) {
         usersArray.push(usersModel);
     }
 
-    res.render('users/admin', { usersArray });
+    res.render('admin/users/admin', { usersArray });
 };
 
 //Render user form
 adminCtrl.renderUserForm = (req, res) => {
-    res.render('users/createUserForm');
+    res.render('admin/users/createUserForm');
 }
 
 //Add user
