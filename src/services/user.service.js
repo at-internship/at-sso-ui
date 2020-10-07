@@ -1,17 +1,29 @@
-const { default: Axios } = require("axios")
-
 const axios = require("axios");
 const User = require("../models/User");
 const USERS_SERVICE_URI = "https://at-sso-api.herokuapp.com/api/v1/user";
 
-exports.getUsers = function () {
-    axios.get(USERS_SERVICE_URI).then(resp => {
-        console.log(resp.data);
-    });
-}
+const userService = {};
+
+userService.getUsers = function () {
+    return new Promise((resolve, reject) => axios({
+        method: "GET",
+        url: USERS_SERVICE_URI,
+        headers: {
+            "content-type": "application/json"
+        },
+    }).then(response => {
+        resolve(
+            response.data
+        )
+    }).catch(err => {
+        reject({
+            err
+        })
+    }))
+};
 
 module.exports = {
-    CreateUser: () =>
+    CreateUser: () => {
         axios({
             method: "POST",
             url: USERS_SERVICE_URI,
@@ -25,4 +37,5 @@ module.exports = {
                 status: 'Integer 0,1',
             },
         })
+    }, userService
 }

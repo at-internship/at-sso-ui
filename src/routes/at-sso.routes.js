@@ -2,10 +2,9 @@ const { Router } = require('express');
 const router = Router();
 
 const { renderIndexAdmin, renderUserForm, addUser} = require('../controllers/admin.controller');
-const { UserServiceApi } = require('../controllers/users.controller');
 
 //Admin dashboard
-router.get('/', UserServiceApi);
+router.get('/', renderIndexAdmin);
 
 //Add user
 router.get('/user', renderUserForm);

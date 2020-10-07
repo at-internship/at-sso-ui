@@ -1,11 +1,28 @@
 const adminCtrl = {};
-const request = require('request');
-const User = require('../models/User');
-const { service } = require('../services/user.service');
+const { userService } = require('../services/user.service');
+
+let usersArray = [];
+let usersModel = {};
 
 // Index
-adminCtrl.renderIndexAdmin = (req, res) => {
-    res.send(service.getUsers());
+adminCtrl.renderIndexAdmin = async function (req, res) {
+    const usersJson = await userService.getUsers();
+
+    for (let i = 0; i < usersJson.length; i++) {
+        const user = usersJson[i];
+        usersModel = {
+            id: user.id,
+            name: user.name,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            password: user.password,
+            status: user.status
+        }
+        usersArray.push(usersModel);
+    }
+
+    res.render('users/admin', { usersArray });
 };
 
 //Render user form

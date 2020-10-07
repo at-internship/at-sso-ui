@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>
-</head>
-<body>
-    <div class="" style="height: 85px; overflow-y:scroll;">
-        
-    </div>
-</body>
-</html>
+<h2>Users</h2>
+<div class="usersList">
+{{#each usersArray}}
+<h5>Nombre: {{name}}​​ - Primer apellido: {{firstname}}​​ - Segundo apellido: {{lastname}}​​ - Correo: {{email}}​​ - Estatus: {{status}}​​</h5>
+{{/each}}​​
+</div>
