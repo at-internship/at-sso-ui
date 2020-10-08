@@ -1,43 +1,32 @@
 const axios = require("axios");
-
 const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
-console.log("AT_SSO_SERVICE_URI:" + AT_SSO_SERVICE_URI);
+const USERSERVICE = {};
 
-const userService = {};
-
-userService.getUsers = function() {
-    return new Promise((resolve, reject) => axios({
+USERSERVICE.getAllUsers = () => { 
+    return axios ({
         method: "GET",
-        url: AT_SSO_SERVICE_URI + `/v1/user`,
-        headers: {
-            "content-type": "application/json"
-        },
-    }).then(response => {
-        resolve(
-            response.data
-        )
-    }).catch(err => {
-        reject({
-            err
-        })
-    }))
+            url: AT_SSO_SERVICE_URI + `/v1/user`,
+            headers: {
+                "content-type": "application/json",
+            },
+
+    }).catch(function(error) {
+        console.log('Error: ' + error.message);
+    });
 };
 
-module.exports = {
-    CreateUser: () => {
-        axios({
-            method: "POST",
-            url: AT_SSO_SERVICE_URI + `/v1/user`,
-            data: {
-                id: 'ObjectID',
-                name: 'String',
-                firstName: 'String',
-                lastName: 'String',
-                email: 'String',
-                password: 'String (hash)',
-                status: 'Integer 0,1',
-            },
-        })
-    },
-    userService
+USERSERVICE.setUserInfo = (userName) =>{
+    return axios ({
+        method: "POST",
+        url: AT_SSO_SERVICE_URI + `/v1/user`,
+        data: {
+            name: userName
+
+        },
+    }).catch(function(error) {
+        console.log('Error: ' + error.message);
+    });
 }
+
+module.exports = USERSERVICE;
+
