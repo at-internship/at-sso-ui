@@ -1,8 +1,6 @@
 const {getAllUsers, setUserInfo}=require("../services/user.service");
 const userCtrl = {};
 
-
-
 userCtrl.dashboard = async(req, res) => {
     let users;
     await getAllUsers().then((result) => {

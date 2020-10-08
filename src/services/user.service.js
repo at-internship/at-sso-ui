@@ -4,7 +4,7 @@ const axios = require("axios");
 const AT_SSO_SERVICE_URI = "https://at-sso-api.herokuapp.com/api";
 console.log(AT_SSO_SERVICE_URI);
 
-const dataInfo = {
+/*const dataInfo = {
     id: "4566458321213asd",
     name:"Irving Mariano Espiritu Oliva",
     firstname: "Irving",
@@ -12,7 +12,7 @@ const dataInfo = {
     email:"irving@email.com",
     password:"123456",
     status:"A"
-};
+};*/
 
 const USERSERVICE = {};
 USERSERVICE.getAllUsers = () => { 
