@@ -19,6 +19,15 @@ app.engine(
 
 app.set("view engine", ".hbs");
 
+app.engine('.hbs', exphbs({
+    defaultLayout:"main",
+    layoutsDir: path.join(app.get('views'), 'layouts'),
+    partialsDir: path.join(app.get('views'), 'partials'),
+    extname: '.hbs'
+}))
+
+app.set('view engine', '.hbs');
+
 //Middlewares
 app.use(express.urlencoded({ extended: false })); 
 
