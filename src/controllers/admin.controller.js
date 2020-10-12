@@ -1,38 +1,184 @@
 const adminCtrl = {};
-const { userService } = require('../services/user.service');
 
-let usersArray = [];
-let usersModel = {};
+// MICROSERVICE - HEROKU - SSO
+const ssoServiceAPI = require("../services/at-sso-api.service");
 
-// Index
-adminCtrl.renderIndexAdmin = async function (req, res) {
-    const usersJson = await userService.getUsers();
-
-    for (let i = 0; i < usersJson.length; i++) {
-        const user = usersJson[i];
-        usersModel = {
-            id: user.id,
-            name: user.name,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            password: user.password,
-            status: user.status
-        }
-        usersArray.push(usersModel);
-    }
-
-    res.render('admin/users/admin', { usersArray });
+// AT-SSO - Admin - Index
+adminCtrl.renderIndex = async(req, res) => {
+    console.log("--> adminCtrl.renderIndex");
+    res.render("admin/index");
 };
 
-//Render user form
-adminCtrl.renderUserForm = (req, res) => {
-    res.render('admin/users/createUserForm');
-}
+// AT-SSO - Admin - Users - Render User List
+adminCtrl.renderUserList = async(req, res) => {
+    console.log("--> adminCtrl.renderUserList");
 
-//Add user
-adminCtrl.addUser = (req, res) => {
-    res.render('Hola aquí va la parte de agregar usuario');
-}
+    try {
+        const responseUsers = await ssoServiceAPI.getAllUsers();
+        console.log("---> adminCtrl.renderUserList.getAllUsers");
+        //console.log(responseUsers.data);
+        const users = responseUsers.data;
+        res.render("admin/user/index", { users });
+    } catch (err) {
+        console.error(err.message);
+        res.render("admin/user/index");
+    }
+};
+
+// AT-SSO - Admin - Users - Render Add User Form
+adminCtrl.renderAddUserForm = async(req, res) => {
+    console.log("--> adminCtrl.renderAddUserForm");
+    res.render("admin/user/add-user");
+};
+
+// AT-SSO - Admin - Users - Add User
+adminCtrl.addUser = async(req, res) => {
+    console.log("--> adminCtrl.addUser");
+
+    const {
+        user_name,
+        user_firstName,
+        user_lastName,
+        user_email,
+        user_password,
+        user_status,
+    } = req.body;
+    const userErrors = [];
+
+    // Validations
+    if (!user_name) {
+        userErrors.push({ text: "Please Type a Name." });
+    }
+
+    if (!user_firstName) {
+        userErrors.push({ text: "Please Type a First Name." });
+    }
+
+    if (!user_lastName) {
+        userErrors.push({ text: "Please Type a Last Name." });
+    }
+
+    if (!user_email) {
+        userErrors.push({ text: "Please Type an Email." });
+    }
+
+    if (!user_password) {
+        userErrors.push({ text: "Please Type a Password." });
+    }
+
+    if (!user_status) {
+        userErrors.push({ text: "Please Type a Status." });
+    }
+
+    if (userErrors.length > 0) {
+        res.render("admin/user/add-user", {
+            userErrors,
+            user_name,
+            user_firstName,
+            user_lastName,
+            user_password,
+            user_email,
+            user_status,
+        });
+    } else {
+        // Send data to microservice
+        await ssoServiceAPI.setUserInfo(user_name, user_firstName, user_lastName, user_email, user_password, user_status).then(result => {
+            //mensaje
+            console.log("name: " + user_name);
+            console.log("firstName: " + user_firstName);
+            console.log("lastName: " + user_lastName);
+            console.log("email: " + user_email);
+            console.log("password: " + user_password);
+            console.log("status: " + user_status);
+        });
+
+        // Redirect
+        req.flash("success_msg", "User Added Successfully");
+        res.redirect("/admin/user");
+    }
+};
+
+// AT-SSO - Admin - Users - Render Edit User Form
+adminCtrl.renderEditUserForm = async(req, res) => {
+    console.log("--> adminCtrl.renderEditUserForm");
+    res.render("admin/user/edit-user");
+};
+
+// AT-SSO - Admin - Users - Edit User
+adminCtrl.updateUser = async(req, res) => {
+    console.log("--> adminCtrl.updateUser");
+
+    const user_id = req.params.id;
+    console.log("--> user id:" + user_id);
+    if (!user_id) {
+        req.flash("error_msg", "Not Authorized");
+        return res.redirect("/admin/user");
+    }
+
+    const {
+        user_name,
+        user_firstName,
+        user_lastName,
+        user_email,
+        user_status,
+    } = req.body;
+    const userErrors = [];
+
+    // Validations
+    if (!user_name) {
+        userErrors.push({ text: "Please Type a Name." });
+    }
+
+    if (!user_firstName) {
+        userErrors.push({ text: "Please Type a First Name." });
+    }
+
+    if (!user_lastName) {
+        userErrors.push({ text: "Please Type a Last Name." });
+    }
+
+    if (!user_email) {
+        userErrors.push({ text: "Please Type an Email." });
+    }
+
+    if (!user_status) {
+        userErrors.push({ text: "Please Type a Status." });
+    }
+
+    if (userErrors.length > 0) {
+        res.render("admin/user/edit-user", {
+            userErrors,
+            user_id,
+            user_name,
+            user_firstName,
+            user_lastName,
+            user_email,
+            user_status,
+        });
+    } else {
+        // Send data to microservice
+
+        // Redirect
+        req.flash("success_msg", "User Updated Successfully");
+        res.redirect("/admin/user");
+    }
+};
+
+// AT-SSO - Admin - Users - Delete User
+adminCtrl.deleteUser = async(req, res) => {
+    console.log("--> adminCtrl.deleteUser");
+
+    const user_id = req.params.id;
+    console.log("--> user id:" + user_id);
+    if (!user_id) {
+        req.flash("error_msg", "Not Authorized");
+        return res.redirect("/admin/user");
+    }
+
+    const errors = [];
+
+    req.flash("success_msg", "User Deleted Successfully");
+    res.redirect("/admin/user");
+};
 
 module.exports = adminCtrl;

@@ -1,0 +1,14 @@
+/* HOME */
+
+#home.scroll-wrapper-div {
+    overflow-y: scroll;
+    max-height: 800px;
+    width: auto;
+    max-width: 1200px;
+    text-align: center;
+}
+
+.layout--radius {
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
