@@ -29,4 +29,10 @@ ssoCtrl.home = async(req, res) => {
     res.render("home");
 };
 
+// AT-SSO - Out Team
+ssoCtrl.team = async(req, res) => {
+    console.log("--> ssoCtrl.team");
+    res.render("team");
+};
+
 module.exports = ssoCtrl;

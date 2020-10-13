@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 
 // Admin Controller
-const { renderSigninForm, signin, signout, home } = require("../controllers/at-sso.controller");
+const { renderSigninForm, signin, signout, home, team } = require("../controllers/at-sso.controller");
 
 // Helpers
 // const { isAdmin } = require("../helpers/auth");
@@ -22,5 +22,8 @@ router.get("/signout", signout);
 
 // AT-SSO - Home
 router.get("/home", home);
+
+// AT-SSO - Our Team
+router.get("/team", team);
 
 module.exports = router;
