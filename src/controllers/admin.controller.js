@@ -45,15 +45,15 @@ adminCtrl.addUser = async(req, res) => {
             user_status,
         } = req.body;
         const userErrors = [];
-
+        
         // Validations
-        //if (!user_name) {
-        //    userErrors.push({ text: "Please Type a Name." });
-        //}
+        if (!user_name) {
+            userErrors.push({ text: "Please Type a Name." });
+        }
 
-        //if (!user_firstName) {
-        //    userErrors.push({ text: "Please Type a First Name." });
-        //}
+        if (!user_firstName) {
+            userErrors.push({ text: "Please Type a First Name." });
+        }
 
         if (!user_lastName) {
             userErrors.push({ text: "Please Type a Last Name." });
@@ -94,14 +94,15 @@ adminCtrl.addUser = async(req, res) => {
                 console.log("status: " + user_status);
             });
             // Redirect
-            req.flash("success_msg", "User Added Successfully");
-            res.redirect("/admin/user");
+                req.flash("success_msg", "User Added Successfully");
+                res.redirect("/admin/user");
             }
         } catch (err) {
+            console.log("--->Are you here: catch");
             console.error(err.message);
             req.flash("error_msg", "Error message");
             res.redirect("/admin/user");
-        }
+        }    
 };
 
 // AT-SSO - Admin - Users - Render Edit User Form
