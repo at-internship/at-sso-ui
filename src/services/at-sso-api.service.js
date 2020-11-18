@@ -2,10 +2,10 @@ const axios = require("axios");
 
 // LOCAL
 //require("dotenv").config();
-//const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI || `https://at-sso-api.herokuapp.com/api`;
+const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI || `https://at-sso-api.herokuapp.com/api`;
 
 // PROD
-const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
+//const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
 console.log("AT_SSO_SERVICE_URI:" + AT_SSO_SERVICE_URI);
 
 const AT_SSO_SERVICE = {};

@@ -35,67 +35,73 @@ adminCtrl.renderAddUserForm = async(req, res) => {
 adminCtrl.addUser = async(req, res) => {
     console.log("--> adminCtrl.addUser");
 
-    const {
-        user_name,
-        user_firstName,
-        user_lastName,
-        user_email,
-        user_password,
-        user_status,
-    } = req.body;
-    const userErrors = [];
-
-    // Validations
-    if (!user_name) {
-        userErrors.push({ text: "Please Type a Name." });
-    }
-
-    if (!user_firstName) {
-        userErrors.push({ text: "Please Type a First Name." });
-    }
-
-    if (!user_lastName) {
-        userErrors.push({ text: "Please Type a Last Name." });
-    }
-
-    if (!user_email) {
-        userErrors.push({ text: "Please Type an Email." });
-    }
-
-    if (!user_password) {
-        userErrors.push({ text: "Please Type a Password." });
-    }
-
-    if (!user_status) {
-        userErrors.push({ text: "Please Type a Status." });
-    }
-
-    if (userErrors.length > 0) {
-        res.render("admin/user/add-user", {
-            userErrors,
+    try {
+        const {
             user_name,
             user_firstName,
             user_lastName,
-            user_password,
             user_email,
+            user_password,
             user_status,
-        });
-    } else {
-        // Send data to microservice
-        await ssoServiceAPI.setUserInfo(user_name, user_firstName, user_lastName, user_email, user_password, user_status).then(result => {
-            //mensaje
-            console.log("name: " + user_name);
-            console.log("firstName: " + user_firstName);
-            console.log("lastName: " + user_lastName);
-            console.log("email: " + user_email);
-            console.log("password: " + user_password);
-            console.log("status: " + user_status);
-        });
+        } = req.body;
+        const userErrors = [];
 
-        // Redirect
-        req.flash("success_msg", "User Added Successfully");
-        res.redirect("/admin/user");
-    }
+        // Validations
+        //if (!user_name) {
+        //    userErrors.push({ text: "Please Type a Name." });
+        //}
+
+        //if (!user_firstName) {
+        //    userErrors.push({ text: "Please Type a First Name." });
+        //}
+
+        if (!user_lastName) {
+            userErrors.push({ text: "Please Type a Last Name." });
+        }
+
+        if (!user_email) {
+            userErrors.push({ text: "Please Type an Email." });
+        }
+
+        if (!user_password) {
+            userErrors.push({ text: "Please Type a Password." });
+        }
+
+        if (!user_status) {
+            userErrors.push({ text: "Please Type a Status." });
+        }
+    
+        if (userErrors.length > 0) {
+            res.render("admin/user/add-user", {
+                userErrors,
+                user_name,
+                user_firstName,
+                user_lastName,
+                user_password,
+                user_email,
+                user_status,
+            });
+    
+        } else {
+            // Send data to microservice
+            await ssoServiceAPI.setUserInfo(user_name, user_firstName, user_lastName, user_email, user_password, user_status).then(result => {
+                //mensaje
+                console.log("name: " + user_name);
+                console.log("firstName: " + user_firstName);
+                console.log("lastName: " + user_lastName);
+                console.log("email: " + user_email);
+                console.log("password: " + user_password);
+                console.log("status: " + user_status);
+            });
+            // Redirect
+            req.flash("success_msg", "User Added Successfully");
+            res.redirect("/admin/user");
+            }
+        } catch (err) {
+            console.error(err.message);
+            req.flash("error_msg", "Error message");
+            res.redirect("/admin/user");
+        }
 };
 
 // AT-SSO - Admin - Users - Render Edit User Form
