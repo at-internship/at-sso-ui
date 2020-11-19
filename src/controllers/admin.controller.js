@@ -98,7 +98,6 @@ adminCtrl.addUser = async(req, res) => {
                 res.redirect("/admin/user");
             }
         } catch (err) {
-            console.log("--->Are you here: catch");
             console.error(err.message);
             req.flash("error_msg", "Error message");
             res.redirect("/admin/user");
