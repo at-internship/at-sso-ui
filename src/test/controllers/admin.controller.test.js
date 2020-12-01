@@ -29,7 +29,7 @@ describe ('Admin Controler TEST', function(){
         getAllUsersStub.restore();
     });
 
-    it("Should render admin dashboard", function(done) {
+    it("Should render admin Index", function(done) {
         var res = { render: sinon.spy() };
         var req = {};
         var view = adminController.renderIndex(req, res).then(function() {
@@ -37,7 +37,7 @@ describe ('Admin Controler TEST', function(){
             done();
         });
     });
-    it("Should render admin story list view", function(done) {
+    it("Should render admin users list view", function(done) {
         var res = { render: sinon.spy() };
         var req = {};
         var users = [];
