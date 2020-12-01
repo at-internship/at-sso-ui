@@ -47,4 +47,23 @@ describe ('Admin Controler TEST', function(){
             done();
         });
     });
+
+    it("Should render add user form", function(done) {
+        var res = { render: sinon.spy() };
+        var req = {};
+        var view = adminController.renderAddUserForm(req, res).then(function() {
+            expect(res.render.calledOnce).to.be.true;
+            done();
+        });
+    });
+    
+    it("Should render edit user form", function(done) {
+        var res = { render: sinon.spy() };
+        var req = {};
+        var view = adminController.renderEditUserForm(req, res).then(function() {
+            expect(res.render.calledOnce).to.be.true;
+            done();
+        });
+    });
+    
 });

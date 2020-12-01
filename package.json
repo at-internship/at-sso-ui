@@ -7,7 +7,7 @@
         "start": "node src/index.js",
         "dev": "nodemon src/index.js",
         "test": "mocha src/test/**/*.test.js",
-        "test-with-coverage": "nyc --reporter=lcov --reporter=text npm run test"
+        "coverage": "nyc --reporter=lcov --reporter=text npm run test"
     },
     "repository": {
         "type": "git",
