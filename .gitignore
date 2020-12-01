@@ -6,3 +6,7 @@ package-lock.json
 
 # environment variables
 .env
+
+# Code Coverage
+.nyc_output
+coverage
