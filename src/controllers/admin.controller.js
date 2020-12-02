@@ -12,18 +12,22 @@ adminCtrl.renderIndex = async(req, res) => {
 // AT-SSO - Admin - Users - Render User List
 adminCtrl.renderUserList = async(req, res) => {
     console.log("--> adminCtrl.renderUserList");
+    let users = [];
 
     try {
-        const responseUsers = await ssoServiceAPI.getAllUsers();
-        console.log("---> adminCtrl.renderUserList.getAllUsers");
-        //console.log(responseUsers.data);
-        const users = responseUsers.data;
-        res.render("admin/user/index", { users });
+        const responseUserList = await ssoServiceAPI.getAllUsers();
+        if (responseUserList === null || responseUserList === undefined) {
+            req.flash("error_msg", "Service unavailable");
+        } else {
+            users = responseUserList.data;
+        }
     } catch (err) {
         console.error(err.message);
-        res.render("admin/user/index");
+    } finally {
+        res.render("admin/user/index", { users });
     }
 };
+
 
 // AT-SSO - Admin - Users - Render Add User Form
 adminCtrl.renderAddUserForm = async(req, res) => {
@@ -44,7 +48,7 @@ adminCtrl.addUser = async(req, res) => {
             user_password,
             user_status,
         } = req.body;
-        const userErrors = [];
+       const userErrors = [];
         
         // Validations
         if (!user_name) {
@@ -96,7 +100,7 @@ adminCtrl.addUser = async(req, res) => {
             // Redirect
                 req.flash("success_msg", "User Added Successfully");
                 res.redirect("/admin/user");
-            }
+           }
         } catch (err) {
             console.error(err.message);
             req.flash("error_msg", "Error message");
@@ -174,17 +178,22 @@ adminCtrl.updateUser = async(req, res) => {
 adminCtrl.deleteUser = async(req, res) => {
     console.log("--> adminCtrl.deleteUser");
 
-    const user_id = req.params.id;
-    console.log("--> user id:" + user_id);
-    if (!user_id) {
-        req.flash("error_msg", "Not Authorized");
-        return res.redirect("/admin/user");
+    try {
+        const errors = [];
+
+        let user_id = req.params.id;
+    
+       
+        // Redirect
+        req.flash("success_msg", "User Deleted Successfully");
+    } catch (err) {
+        console.log(err.response);
+        if (err.response && err.response.data) {
+            let errorMsg = err.response.data.message;
+            req.flash("error_msg", errorMsg);
+        }
     }
-
-    const errors = [];
-
-    req.flash("success_msg", "User Deleted Successfully");
     res.redirect("/admin/user");
-};
+    };
 
 module.exports = adminCtrl;

@@ -18,7 +18,7 @@ const adminController = require("../../controllers/admin.controller");
 // AT SSO Service API
 const ssoServiceAPI = require("../../services/at-sso-api.service");
 
-describe ('Admin Controler TEST', function(){
+describe ('Admin Controller TEST', function(){
 
     let getAllUsersStub;
 
@@ -29,6 +29,7 @@ describe ('Admin Controler TEST', function(){
         getAllUsersStub.restore();
     });
 
+ // AT-SSO - Admin - Index
     it("Should render admin Index", function(done) {
         var res = { render: sinon.spy() };
         var req = {};
@@ -37,6 +38,8 @@ describe ('Admin Controler TEST', function(){
             done();
         });
     });
+
+ // AT-SSO - Admin - Users List   
     it("Should render admin users list view", function(done) {
         var res = { render: sinon.spy() };
         var req = {};
@@ -48,6 +51,7 @@ describe ('Admin Controler TEST', function(){
         });
     });
 
+ // AT-SSO - Admin - Render Add User Form 
     it("Should render add user form", function(done) {
         var res = { render: sinon.spy() };
         var req = {};
@@ -56,7 +60,8 @@ describe ('Admin Controler TEST', function(){
             done();
         });
     });
-    
+
+ // AT-SSO - Admin - Render Edit User Form
     it("Should render edit user form", function(done) {
         var res = { render: sinon.spy() };
         var req = {};
@@ -65,5 +70,35 @@ describe ('Admin Controler TEST', function(){
             done();
         });
     });
-    
+
+  // AT-SSO - Admin - Add User   
+    it("Should AddUser", function() {
+        var res = { render: sinon.spy() };
+        var req = {};
+        var view = adminController.addUser(req, res).then(function() {
+            expect(res.render.calledOnce).to.be.true;
+          
+        });
+    });
+
+  // AT-SSO - Admin - Update User 
+    it("Should UpdateUser", function() {
+        var res = { render: sinon.spy() };
+        var req = {};
+        var view = adminController.updateUser(req, res).then(function() {
+            expect(res.render.calledOnce).to.be.true;
+          
+        });
+    });
+
+    // AT-SSO - Admin - Delete User  
+    it("Should DeleteUser", function() {
+        var res = { render: sinon.spy() };
+        var req = {};
+        var view = adminController.deleteUser(req, res).then(function() {
+            expect(res.render.calledOnce).to.be.true;
+          
+        });
+    });
+
 });
