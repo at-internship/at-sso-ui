@@ -172,3 +172,10 @@ a.social:hover {
     -o-transition: all 0.4s ease-in-out;
     transition: all 0.4s ease-in-out;
 }
+
+.back-to-top {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: none;
+}

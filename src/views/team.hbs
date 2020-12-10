@@ -341,3 +341,24 @@
     </div>
 </section>
 <!-- Our Team -->
+
+<a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button" title="Back to the top!"><i class="fas fa-chevron-up"></i></a>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 500) {
+                $('#back-to-top').fadeIn();
+            } else {
+                $('#back-to-top').fadeOut();
+            }
+        });
+        // scroll body to 0px on click
+        $('#back-to-top').click(function () {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 400);
+            return false;
+        });
+    });
+</script>
