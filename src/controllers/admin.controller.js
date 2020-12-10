@@ -48,7 +48,19 @@ adminCtrl.addUser = async(req, res) => {
             user_password,
             user_status,
         } = req.body;
+        
        const userErrors = [];
+
+       let users;
+
+       let request = {
+        name: user_name,
+        firstName: user_firstName,
+        lastName: user_lastName,
+        email: user_email,
+        password: user_password,
+        status: parseInt(user_status)
+    };
         
         // Validations
         if (!user_name) {
@@ -86,27 +98,28 @@ adminCtrl.addUser = async(req, res) => {
                 user_status,
             });
     
-        } else {
+         } else {
             // Send data to microservice
-            await ssoServiceAPI.setUserInfo(user_name, user_firstName, user_lastName, user_email, user_password, user_status).then(result => {
-                //mensaje
-                console.log("name: " + user_name);
-                console.log("firstName: " + user_firstName);
-                console.log("lastName: " + user_lastName);
-                console.log("email: " + user_email);
-                console.log("password: " + user_password);
-                console.log("status: " + user_status);
+            await ssoServiceAPI.addUser(request).then(result => {
+                //Mensaje
+                console.log(result);
             });
             // Redirect
                 req.flash("success_msg", "User Added Successfully");
                 res.redirect("/admin/user");
            }
+
         } catch (err) {
-            console.error(err.message);
-            req.flash("error_msg", "Error message");
-            res.redirect("/admin/user");
-        }    
-};
+            console.log(err.response);
+            if (err.response && err.response.data) {
+                let errorMsg = err.response.data.message;
+                req.flash("error_msg", errorMsg);
+            }
+        }
+        res.redirect("/admin/user");
+    };           
+
+
 
 // AT-SSO - Admin - Users - Render Edit User Form
 adminCtrl.renderEditUserForm = async(req, res) => {
@@ -165,7 +178,7 @@ adminCtrl.updateUser = async(req, res) => {
             user_email,
             user_status,
         });
-    } else {
+    } else { 
         // Send data to microservice
 
         // Redirect

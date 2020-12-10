@@ -21,12 +21,15 @@ const ssoServiceAPI = require("../../services/at-sso-api.service");
 describe ('Admin Controller TEST', function(){
 
     let getAllUsersStub;
+    let addUserStub;
 
     beforeEach(function() {
         getAllUsersStub = sinon.stub(ssoServiceAPI, "getAllUsers");
+        addUserStub = sinon.stub(ssoServiceAPI, "addUser");
     });
     afterEach(function() {
         getAllUsersStub.restore();
+        addUserStub.restore();
     });
 
  // AT-SSO - Admin - Index
@@ -38,13 +41,25 @@ describe ('Admin Controller TEST', function(){
             done();
         });
     });
+    
 
  // AT-SSO - Admin - Users List   
     it("Should render admin users list view", function(done) {
         var res = { render: sinon.spy() };
-        var req = {};
+        var req = { flash: sinon.spy() };
         var users = [];
         getAllUsersStub.returns(Promise.resolve(users));
+        var view = adminController.renderUserList(req, res).then(function() {
+            expect(res.render.calledOnce).to.be.true;
+            done();
+        });
+    });
+
+    it("Should render admin users list view - error", function(done) {
+        var res = { render: sinon.spy() };
+        var req = { flash: sinon.spy() };
+        var users = {};
+        getAllUsersStub.returns(Promise.resolve());
         var view = adminController.renderUserList(req, res).then(function() {
             expect(res.render.calledOnce).to.be.true;
             done();
@@ -54,45 +69,130 @@ describe ('Admin Controller TEST', function(){
  // AT-SSO - Admin - Render Add User Form 
     it("Should render add user form", function(done) {
         var res = { render: sinon.spy() };
-        var req = {};
+        var req = { flash: sinon.spy() };
         var view = adminController.renderAddUserForm(req, res).then(function() {
             expect(res.render.calledOnce).to.be.true;
             done();
         });
     });
 
- // AT-SSO - Admin - Render Edit User Form
-    it("Should render edit user form", function(done) {
-        var res = { render: sinon.spy() };
-        var req = {};
-        var view = adminController.renderEditUserForm(req, res).then(function() {
-            expect(res.render.calledOnce).to.be.true;
-            done();
-        });
-    });
 
   // AT-SSO - Admin - Add User   
-    it("Should AddUser", function() {
-        var res = { render: sinon.spy() };
-        var req = {};
+    it("Should Add User Operation - error", function(done) {
+        this.timeout(5000);
+        var res = {
+            render: sinon.spy(),
+            redirect: sinon.spy()
+        };
+        var req = {
+            body: {
+            user_name: null,
+            user_firstName: null,
+            user_lastName: null,
+            user_email: null,
+            user_password: null,
+            user_status: null
+            },
+            flash: sinon.spy()
+        };
+        var err = { response: sinon.spy() };
+        var users = [];
+        addUserStub.returns(Promise.resolve(err));
         var view = adminController.addUser(req, res).then(function() {
-            expect(res.render.calledOnce).to.be.true;
-          
-        });
+            expect(res.redirect.calledOnce).to.be.true;
+            done();
+        }).catch(done);
     });
 
-  // AT-SSO - Admin - Update User 
-    it("Should UpdateUser", function() {
-        var res = { render: sinon.spy() };
-        var req = {};
-        var view = adminController.updateUser(req, res).then(function() {
-            expect(res.render.calledOnce).to.be.true;
-          
-        });
+    it("Should Add User Operation - false", function(done) {
+        this.timeout(5000);
+        var res = {
+            render: sinon.spy(),
+            redirect: sinon.spy()
+        };
+        var req = { flash: sinon.spy() };
+        var users = [];
+        addUserStub.returns(Promise.resolve(users));
+        var view = adminController.addUser(req, res).then(function() {
+            expect(res.render.calledOnce).to.be.false;
+            done();
+        }).catch(done);
     });
 
-    // AT-SSO - Admin - Delete User  
-    it("Should DeleteUser", function() {
+    it("Should Add User Operation - true", function(done) {
+        this.timeout(5000);
+        var res = {
+            render: sinon.spy(),
+            redirect: sinon.spy()
+        };
+        var req = { flash: sinon.spy() };
+        var users = [];
+        addUserStub.returns(Promise.resolve(users));
+        var view = adminController.addUser(req, res).then(function() {
+            expect(res.render.calledOnce).to.be.false;
+            done();
+        }).catch(done);
+    });
+
+ // AT-SSO - Admin - Render Edit User Form
+ it("Should render edit user form", function(done) {
+    this.timeout(5000);
+    var res = { render: sinon.spy() };
+    var req = { params: { id: 0 }, flash: sinon.spy() };
+    var users = { data: [] };
+    getAllUsersStub.returns(Promise.resolve(users));
+    var view = adminController.renderEditUserForm(req, res).then(function() {
+        expect(res.render.calledOnce).to.be.true;
+        done();
+    }).catch(done);
+});
+
+// AT-SSO - Admin - Edit Story
+it("Should update user operation, user_id is null", function(done) {
+    var res = {
+        render: sinon.spy(),
+        redirect: sinon.spy()
+    };
+    var req = {
+        params: {
+            id: null
+        },
+        flash: sinon.spy()
+    };
+    var view = adminController.updateUser(req, res).then(function() {
+        expect(res.render.calledOnce).to.be.false;
+        done();
+    }).catch(done);
+});
+
+it("Should update users operation, usersErrors", function(done) {
+    var res = {
+        render: sinon.spy(),
+        redirect: sinon.spy()
+    };
+    var req = {
+        params: {
+            id: 1
+        },
+        body: {
+            user_name: null,
+            user_firstName: null,
+            user_lastName: null,
+            user_email: null,
+            user_password: null,
+            user_status: null
+        },
+        flash: sinon.spy()
+    };
+    var view = adminController.updateUser(req, res).then(function() {
+        expect(res.render.calledOnce).to.be.true;
+        done();
+    }).catch(done);
+});
+
+
+     // AT-SSO - Admin - Delete User  
+     it("Should DeleteUser", function() {
         var res = { render: sinon.spy() };
         var req = {};
         var view = adminController.deleteUser(req, res).then(function() {
