@@ -49,7 +49,7 @@ adminCtrl.addUser = async(req, res) => {
             user_status,
         } = req.body;
         
-       const userErrors = [];
+       //const userErrors = [];
 
        let users;
 
@@ -62,43 +62,6 @@ adminCtrl.addUser = async(req, res) => {
         status: parseInt(user_status)
     };
         
-        // Validations
-        if (!user_name) {
-            userErrors.push({ text: "Please Type a Name." });
-        }
-
-        if (!user_firstName) {
-            userErrors.push({ text: "Please Type a First Name." });
-        }
-
-        if (!user_lastName) {
-            userErrors.push({ text: "Please Type a Last Name." });
-        }
-
-        if (!user_email) {
-            userErrors.push({ text: "Please Type an Email." });
-        }
-
-        if (!user_password) {
-            userErrors.push({ text: "Please Type a Password." });
-        }
-
-        if (!user_status) {
-            userErrors.push({ text: "Please Type a Status." });
-        }
-    
-        if (userErrors.length > 0) {
-            res.render("admin/user/add-user", {
-                userErrors,
-                user_name,
-                user_firstName,
-                user_lastName,
-                user_password,
-                user_email,
-                user_status,
-            });
-    
-         } else {
             // Send data to microservice
             await ssoServiceAPI.addUser(request).then(result => {
                 //Mensaje
@@ -109,14 +72,15 @@ adminCtrl.addUser = async(req, res) => {
                 res.redirect("/admin/user");
            }
 
-        } catch (err) {
+        catch (err) {
             console.log(err.response);
             if (err.response && err.response.data) {
                 let errorMsg = err.response.data.message;
                 req.flash("error_msg", errorMsg);
             }
+            res.redirect("/admin/user/add");
         }
-        res.redirect("/admin/user");
+        
     };           
 
 
