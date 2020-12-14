@@ -142,13 +142,13 @@ adminCtrl.updateUser = async(req, res) => {
             user_email,
             user_status,
         });
-    } else { 
+    } 
         // Send data to microservice
 
         // Redirect
         req.flash("success_msg", "User Updated Successfully");
         res.redirect("/admin/user");
-    }
+    
 };
 
 // AT-SSO - Admin - Users - Delete User
@@ -169,8 +169,9 @@ adminCtrl.deleteUser = async(req, res) => {
             let errorMsg = err.response.data.message;
             req.flash("error_msg", errorMsg);
         }
+        res.redirect("/admin/user");
     }
-    res.redirect("/admin/user");
+
     };
 
 module.exports = adminCtrl;

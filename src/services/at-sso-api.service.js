@@ -1,14 +1,26 @@
+/**
+ * AT SSO UI - AT SSO Service API.
+ * Copyright 2020 AgileThought, Inc.
+ *
+ * Functions for at-sso-api.service endpoint.
+ *
+ * @author @at-internship
+ * @version 1.0
+ */
+
+// Constants
 const axios = require("axios");
+const AT_SSO_SERVICE = {};
 
 // LOCAL
 //require("dotenv").config();
-const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI || `https://at-sso-api.herokuapp.com/api`;
+//const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI || `https://at-sso-api.herokuapp.com/api`;
 
 // PROD
-//const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
+const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
 console.log("AT_SSO_SERVICE_URI:" + AT_SSO_SERVICE_URI);
 
-const AT_SSO_SERVICE = {};
+
 
 AT_SSO_SERVICE.getAllUsers = () => {
     return axios({
