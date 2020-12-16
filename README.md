@@ -2,7 +2,7 @@
 
 # Node JS Project for AT SSO UI (Internal app) 
 
-at-sso-ui app, is one of the 3 projects of this internship program, which is in charge of managing users, based on SCRUM methodology.
+at-sso-ui app, is one of the 3 projects of this internship program, which is in charge of managing users.
 
 GitHub - https://github.com/at-internship/at-sso-ui
 Heroku App - https://at-sso-ui.herokuapp.com/admin
@@ -34,14 +34,14 @@ Heroku App - https://at-sso-ui.herokuapp.com/admin
 
 ### Unit Test
 
-$ npm install mocha --save-dev
-$ npm install chai --save-dev
-$ npm run test
+* $ npm install mocha --save-dev
+* $ npm install chai --save-dev
+* $ npm run test
 
 ### Code Coverage
 
-$ npm install nock --save-dev
-$ npm run coverage
+* $ npm install nock --save-dev
+* $ npm run coverage
 
 ## Tools
 
