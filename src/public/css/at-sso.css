@@ -9,8 +9,8 @@
 }
 
 .layout--radius {
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
+    -webkit-border-radius: 5%;
+    border-radius: 5%;
 }
 
 
@@ -22,35 +22,6 @@
 #team {
     background: #eee !important;
 }
-
-
-/*html,
-body {
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 300;
-  color: #999;
-  background-color: #fff;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0 0 20px 0;
-  text-transform: none;
-  color: color: rgb(76, 132, 254);
-  font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 600;
-  letter-spacing: 1px;
-  line-height: 1.5;
-}}*/
 
 a.social:link,
 a.social:active,

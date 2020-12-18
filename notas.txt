@@ -10,6 +10,12 @@ method-override
 passport 
 passport-local 
 morgan
+sinon
+nyc
+chai
+chai-http
+mocha
+nock
 
 *Development dependencies*
 
