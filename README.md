@@ -2,7 +2,7 @@
 
 # Node JS Project for AT SSO UI (Internal app) 
 
-at-sso-ui app, is one of the 3 projects of this internship program, which is in charge of managing users.
+at-sso-ui app, is one of the 3 projects of this internship program, which is in charge of sso auth.
 
 GitHub - https://github.com/at-internship/at-sso-ui
 Heroku App - https://at-sso-ui.herokuapp.com/admin
@@ -52,7 +52,7 @@ Heroku App - https://at-sso-ui.herokuapp.com/admin
 | Mocha & Chai | Unit Testing |
 | MongoDB | NoSQL Database |
 | MongoCompass | MongoDB GUI |
-| Heroku | Platform as a service |
+| Heroku | Platform as a Service |
 | Axios | Services Manage |
 
 ## Contributor Team
@@ -75,4 +75,4 @@ _Irving - Ghostbusters Team_
 
 ## Acknowledgments
 
-Thanks to 4thSource© for letting us participate in this internship program, to the Mentors and the architect for guiding us through the process and adaptation, in order to develop our potential in the intership.
+Thanks to 4thSource© for letting us participate in this internship program, to the Mentors and the architect for guiding us through the process and adaptation, in order to develop our potential.
