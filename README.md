@@ -40,7 +40,7 @@ Heroku App - https://at-sso-ui.herokuapp.com/admin
 
 ### Code Coverage
 
-* $ npm install nock --save-dev
+* $ npm install nyc --save-dev
 * $ npm run coverage
 
 ## Tools
