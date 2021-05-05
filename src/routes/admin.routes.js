@@ -19,22 +19,22 @@ const {
 // ============= Sub Routes =============
 
 // AT-SSO - Admin - Index
-router.get("/", renderIndex);
+router.get("/",isAdmin, renderIndex);
 
 // AT-SSO - Admin - Users - Render User List
-router.get("/user", renderUserList);
+router.get("/user",isAdmin,renderUserList);
 
 // AT-SSO - Admin - Users - Render Add User Form
-router.get("/user/add", renderAddUserForm);
+router.get("/user/add",isAdmin, renderAddUserForm);
 // AT-SSO - Admin - Users - Add User
-router.post("/user/add", addUser);
+router.post("/user/add",isAdmin, addUser);
 
 // AT-SSO - Admin - Users - Render Edit User Form
-router.get("/user/edit/:id", renderEditUserForm);
+router.get("/user/edit/:id",isAdmin, renderEditUserForm);
 // AT-SSO - Admin - Users - Edit User
-router.put("/user/edit/:id", updateUser);
+router.put("/user/edit/:id",isAdmin, updateUser);
 
 // AT-SSO - Admin - Users - Delete User
-router.get("/user/delete/:id", deleteUser);
+router.get("/user/delete/:id",isAdmin, deleteUser);
 
 module.exports = router;
