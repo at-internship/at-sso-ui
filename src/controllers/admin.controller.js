@@ -103,9 +103,9 @@ adminCtrl.addUser = async (req, res) => {
       //console.debug("request-->", request);
   
       // Call Create USER - POST /api/v1/users endpoint
-      await sceServiceAPI.createUser(request).then((result) => {
+      await ssoServiceAPI.createUser(request).then((result) => {
         if (!result) {
-          console.error("Service unavailable: sceServiceAPI.createUser()");
+          console.error("Service unavailable: ssoServiceAPI.createUser()");
           req.flash("error_msg", "Service unavailable");
           res.redirect("/admin/user");
         }
@@ -125,15 +125,15 @@ adminCtrl.addUser = async (req, res) => {
     }
   };
   
-  // AT-SCE - Admin - Users - Render Edit User Form
+  // AT-SSO - Admin - Users - Render Edit User Form
   adminCtrl.renderEditUserForm = async (req, res) => {
     console.log("--> adminCtrl.renderEditUserForm", req.params.id);
     let user = [];
   
     try {
-      const responseUserbyId = await sceServiceAPI.getUserById(req.params.id);
+      const responseUserbyId = await ssoServiceAPI.getUserById(req.params.id);
       if (!responseUserbyId) {
-        console.error("Service unavailable: sceServiceAPI.getUserById()");
+        console.error("Service unavailable: ssoServiceAPI.getUserById()");
         req.flash("error_msg", "Service unavaible");
       } else {
         user = responseUserbyId.data;
@@ -146,7 +146,7 @@ adminCtrl.addUser = async (req, res) => {
     }
   };
   
-  // AT-SCE - Admin - Users - Edit User
+  // AT-SSO - Admin - Users - Edit User
   adminCtrl.updateUser = async (req, res) => {
     console.log("--> adminCtrl.updateUser");
   
@@ -210,9 +210,9 @@ adminCtrl.addUser = async (req, res) => {
       //console.debug("Request-->", request);
   
       // Call Update USER - PUT /api/v1/users endpoint
-      await sceServiceAPI.updateUser(request).then((result) => {
+      await ssoServiceAPI.updateUser(request).then((result) => {
         if (!result) {
-          console.error("Service unavailable: sceServiceAPI.updateUser()");
+          console.error("Service unavailable: ssoServiceAPI.updateUser()");
           req.flash("error_msg", "Service unavailable");
           res.redirect("/admin/user");
         }
@@ -232,16 +232,16 @@ adminCtrl.addUser = async (req, res) => {
     }
   };
   
-  // AT-SCE - Admin - Users - Delete User
+  // AT-SSO - Admin - Users - Delete User
   adminCtrl.deleteUser = async (req, res) => {
     console.log("--> adminCtrl.deleteUser");
     const user_id = req.params.id;
     console.debug(user_id);
   
     try {
-      const response = await sceServiceAPI.deleteUser(user_id);
+      const response = await ssoServiceAPI.deleteUser(user_id);
       if (!response) {
-        console.error("Service unavailable: sceServiceAPI.deleteUser()");
+        console.error("Service unavailable: ssoServiceAPI.deleteUser()");
         req.flash("error_msg", "Service unavailable");
         es.redirect("/admin/user");
       }
