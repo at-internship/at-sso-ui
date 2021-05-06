@@ -36,7 +36,7 @@ AT_SSO_SERVICE.login = (data) => {
 AT_SSO_SERVICE.getAllUsers = () => {
     return axios({
         method: "GET",
-        url: AT_SSO_SERVICE_URI + `/v1/user`,
+        url: `${AT_SSO_SERVICE_URI}/v1/users`,
         headers: {
             "content-type": "application/json",
         },
@@ -93,7 +93,7 @@ AT_SSO_SERVICE.deleteUser = (id) => {
 AT_SSO_SERVICE.addUser = (data) => {
     return axios({
         method: "POST",
-        url: AT_SSO_SERVICE_URI + `/v1/user`,
+        url: `${AT_SSO_SERVICE_URI}/v1/users`,
         data: data,
         headers: {
             "content-type": "application/json"
