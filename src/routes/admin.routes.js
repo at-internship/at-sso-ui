@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const path = require('path');
 
+// Helpers
+const { isAdmin } = require("../helpers/auth.helper");
+
 // Admin Controller
 const {
     renderIndex,
@@ -13,9 +16,6 @@ const {
     deleteUser
 } = require("../controllers/admin.controller");
 
-// Helpers
-// const { isAdmin } = require("../helpers/auth");
-
 // ============= Sub Routes =============
 
 // AT-SSO - Admin - Index
@@ -26,11 +26,13 @@ router.get("/user",renderUserList);
 
 // AT-SSO - Admin - Users - Render Add User Form
 router.get("/user/add", renderAddUserForm);
+
 // AT-SSO - Admin - Users - Add User
-router.post("/user/add", addUser);
+router.post("/user/add", isAdmin, addUser);
 
 // AT-SSO - Admin - Users - Render Edit User Form
-router.get("/user/edit/:id", renderEditUserForm);
+router.get("/user/edit/:id", isAdmin, renderEditUserForm);
+
 // AT-SSO - Admin - Users - Edit User
 router.put("/user/edit/:id", updateUser);
 
