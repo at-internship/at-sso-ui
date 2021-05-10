@@ -54,6 +54,9 @@ app.use("/", require("./routes/at-sso.routes"));
 // AT-SSO Routes - Admin
 app.use("/admin", require("./routes/admin.routes"));
 
+// AT-SCE Healthcheck
+app.use("/health-check", require("./routes/health-check.routes"));
+
 // Static files
 app.use(express.static(path.join(__dirname, "public")));
 
