@@ -1,3 +1,15 @@
+/**
+ * AT SCE UI - AT Admin Controller.
+ * Copyright 2021 AgileThought, Inc.
+ *
+ * General functions for admin-controller.
+ *
+ * @author @at-internship
+ * @version 1.0
+ *
+ */
+
+//AT Admin Controller
 const adminCtrl = {};
 
 // CREATE_USER_ENCRYPTION_ENABLED FLAG
@@ -10,7 +22,7 @@ const UPDATE_USER_ENCRYPTION_ENABLED = process.env.UPDATE_USER_ENCRYPTION_ENABLE
 const ssoServiceAPI = require("../services/at-sso-api.service");
 
 //Helpers
-const { encrypt } = require("../services/at-sso-api.service");
+const { encrypt } = require("../helpers/auth.helper");
 
 // AT-SSO - Admin - Index
 adminCtrl.renderIndex = async(req, res) => {
