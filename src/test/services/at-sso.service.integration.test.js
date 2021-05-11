@@ -56,4 +56,45 @@ describe('INTEGRATION TEST: at-sso-service', () => {
                 done();
             });
     });*/
+    // Operation: Get ALL USERS - GET/api/v1/users - BE Success (Happy Path)
+    it('INTEGRATION TEST: Should Get All Users - Call GET/api/v1/users - BE Success (Happy Path)', (done) => {
+        chai.request(SCE_SERVICE_API)
+            .get('/')
+            .end(function (err, res) {
+                //console.debug(res.body);
+
+                // Response Status
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+
+    // Operation: Get ALL USERS - GET/api/v1/users - BE Error - 400 Bad Request
+    it('INTEGRATION TEST: Should Fail Get All Users - Call GET/api/v1/users - BE Error - 400 Bad Request', (done) => {
+        chai.request(SCE_SERVICE_API_400)
+            .get('/')
+            .end(function(err, res) {
+                //console.debug(res.body)
+
+                // Response Status
+                expect(res).to.have.status(404);
+
+                // Response message
+                expect(res).to.have.property('body');
+                
+                expect(res.body).to.have.property('status');
+                expect(res.body).to.have.property('status').equals(404);
+                
+                expect(res.body).to.have.property('error');
+                expect(res.body).to.have.property('error').equals('Not Found');
+                
+                expect(res.body).to.have.property('message');
+                expect(res.body).to.have.property('message').equals('No message available');
+
+                expect(res.body).to.have.property('path');
+                expect(res.body).to.have.property('path').equals('/api/v1/usuarios/');
+
+                done();
+            });
+    });
 });

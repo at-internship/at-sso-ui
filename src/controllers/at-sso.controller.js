@@ -1,4 +1,5 @@
 const ssoCtrl = {};
+const passport = require("passport");
 
 // AT-SSO - Index/Login
 ssoCtrl.renderSigninForm = async(req, res) => {
@@ -6,13 +7,11 @@ ssoCtrl.renderSigninForm = async(req, res) => {
     res.render("signin");
 };
 
-ssoCtrl.signin = async(req, res) => {
-    console.log("--> ssoCtrl.signin");
-
-    // Redirect
-    req.flash("success_msg", "User signin Successfully");
-    res.redirect("/home");
-};
+ssoCtrl.signin = passport.authenticate("local", {
+    successRedirect: "/home",
+    failureRedirect: "/signin",
+    failureFlash: true,
+  });
 
 // AT-SSO - Logout
 ssoCtrl.signout = async(req, res) => {

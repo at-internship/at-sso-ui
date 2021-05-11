@@ -4,6 +4,7 @@ const path = require('path');
 
 // Admin Controller
 const { renderSigninForm, signin, signout, home, team } = require("../controllers/at-sso.controller");
+const { isAuthenticated } = require("../helpers/auth.helper");
 
 // Helpers
 // const { isAdmin } = require("../helpers/auth");
@@ -21,7 +22,7 @@ router.post("/signin", signin);
 router.get("/signout", signout);
 
 // AT-SSO - Home
-router.get("/home", home);
+router.get("/home", isAuthenticated, home);
 
 // AT-SSO - Our Team
 router.get("/team", team);
