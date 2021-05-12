@@ -14,7 +14,7 @@ const AT_SSO_SERVICE = {};
 
 // MICROSERVICE - HEROKU - SCE
 const AT_SCE_SERVICE_URI = process.env.AT_SCE_SERVICE_URI;
-console.debug(`at-sce-api.service - AT_SCE_SERVICE_URI: ${AT_SCE_SERVICE_URI}`);
+console.debug(`at-sso-api.service - AT_SCE_SERVICE_URI: ${AT_SCE_SERVICE_URI}`);
 
 // MICROSERVICE - HEROKU - SS0
 const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
@@ -23,7 +23,7 @@ console.debug(`at-sso-api.service - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
 // AT_SSO_SERVICE_URI_ENABLED FLAG
 const AT_SSO_SERVICE_URI_ENABLED = process.env.AT_SSO_SERVICE_URI_ENABLED;
 const AT_SERVICE_URI = (AT_SSO_SERVICE_URI_ENABLED == 'true') ? AT_SSO_SERVICE_URI : AT_SCE_SERVICE_URI;
-console.log(`at-sce-api.service - AT_SERVICE_URI: ${AT_SERVICE_URI}`);
+console.log(`at-sso-api.service - AT_SERVICE_URI: ${AT_SERVICE_URI}`);
 
 // Operation: Login - POST /api/v1/login
 AT_SSO_SERVICE.login = (data) => {
