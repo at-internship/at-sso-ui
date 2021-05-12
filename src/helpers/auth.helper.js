@@ -1,6 +1,6 @@
 
 /**
- * AT SCE UI - AT SCE HELPER.
+ * AT SSO UI - AT SSO HELPER.
  * Copyright 2021 AgileThought, Inc.
  *
  * Functions for auth.helper.

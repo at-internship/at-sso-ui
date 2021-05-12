@@ -18,20 +18,12 @@ console.debug(`at-sce-api.service - AT_SCE_SERVICE_URI: ${AT_SCE_SERVICE_URI}`);
 
 // MICROSERVICE - HEROKU - SS0
 const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
-console.debug(`at-sce-api.service - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
+console.debug(`at-sso-api.service - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
 
 // AT_SSO_SERVICE_URI_ENABLED FLAG
 const AT_SSO_SERVICE_URI_ENABLED = process.env.AT_SSO_SERVICE_URI_ENABLED;
 const AT_SERVICE_URI = (AT_SSO_SERVICE_URI_ENABLED == 'true') ? AT_SSO_SERVICE_URI : AT_SCE_SERVICE_URI;
 console.log(`at-sce-api.service - AT_SERVICE_URI: ${AT_SERVICE_URI}`);
-
-// LOCAL
-//require("dotenv").config();
-//const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI || `https://at-sso-api.herokuapp.com/api`;
-
-// PROD
-//const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
-//console.log("AT_SSO_SERVICE_URI:" + AT_SSO_SERVICE_URI);
 
 // Operation: Login - POST /api/v1/login
 AT_SSO_SERVICE.login = (data) => {
@@ -101,17 +93,6 @@ AT_SSO_SERVICE.deleteUser = (id) => {
       "content-type": "application/json",
     },
   });
-};
-//Add user
-AT_SSO_SERVICE.addUser = (data) => {
-    return axios({
-        method: "POST",
-        url: `${AT_SERVICE_URI}/v1/users`,
-        data: data,
-        headers: {
-            "content-type": "application/json"
-        }, 
-    });
 };
 
 module.exports = AT_SSO_SERVICE;

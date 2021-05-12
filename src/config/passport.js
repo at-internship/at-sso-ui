@@ -1,5 +1,5 @@
 /**
- * AT SCE UI - AT Auth Passport.
+ * AT SSO UI - AT Auth Passport.
  * Copyright 2021 AgileThought, Inc.
  *
  * General functions for passport.
@@ -16,7 +16,7 @@ const LocalStrategy = require("passport-local").Strategy;
 // LOGIN_ENCRYPTION_ENABLED FLAG
 const LOGIN_ENCRYPTION_ENABLED = process.env.LOGIN_ENCRYPTION_ENABLED;
 
-// MICROSERVICE - HEROKU - AT SCE API
+// MICROSERVICE - HEROKU - AT SSO API
 const ssoServiceAPI = require("../services/at-sso-api.service");
 
 // Helpers

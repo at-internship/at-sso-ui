@@ -7,6 +7,7 @@ ssoCtrl.renderSigninForm = async(req, res) => {
     res.render("signin");
 };
 
+//AT-SSO - Signin
 ssoCtrl.signin = passport.authenticate("local", {
     successRedirect: "/home",
     failureRedirect: "/signin",

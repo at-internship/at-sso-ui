@@ -12,105 +12,343 @@
 const expect = require("chai").expect;
 const nock = require("nock");
 
-// AT SSO Service API
-const ssoServiceAPI = 'https://at-sso-api.herokuapp.com/api' + '/v1/user';
-const ssoServiceAPI_400 = 'https://at-sso-api.herokuapp.com/api' + '/v1/users';
-
 // MICROSERVICE - HEROKU - SSO
-const atssoServiceAPI = require("../../services/at-sso-api.service");
+const AT_SSO_SERVICE_API = require("../../services/at-sso-api.service");
+
+// MICROSERVICE - HEROKU - SCE
+const AT_SCE_SERVICE_URI = process.env.AT_SCE_SERVICE_URI;
+
+// MICROSERVICE - HEROKU - SS0
+const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
+
+// AT_SSO_SERVICE_URI_ENABLED FLAG
+const AT_SSO_SERVICE_URI_ENABLED = process.env.AT_SSO_SERVICE_URI_ENABLED;
+const AT_SERVICE_URI =
+  AT_SSO_SERVICE_URI_ENABLED == "true"
+    ? AT_SSO_SERVICE_URI
+    : AT_SCE_SERVICE_URI;
+console.log(`at-sce.service.test - AT_SERVICE_URI: ${AT_SERVICE_URI}`);
 
 // Operations
-const getAllUsers = atssoServiceAPI.getAllUsers;
-const getAllUsers_error = atssoServiceAPI.getAllUsers;
-const addUser = atssoServiceAPI.addUser;
+const login = AT_SSO_SERVICE_API.login;
+const login_error = AT_SSO_SERVICE_API.login;
 
-// http://at-sso-api.herokuapp.com/swagger-ui.html
+const getAllUsers = AT_SSO_SERVICE_API.getAllUsers;
+const getAllUsers_error = AT_SSO_SERVICE_API.getAllUsers;
+
+const createUser = AT_SSO_SERVICE_API.createUser;
+const createUser_error = AT_SSO_SERVICE_API.createUser;
+
+const updateUser = AT_SSO_SERVICE_API.updateUser;
+
+const deleteUser = AT_SSO_SERVICE_API.deleteUser;
+const deleteUser_error = AT_SSO_SERVICE_API.deleteUser;
+
+const getUserById = AT_SSO_SERVICE_API.getUserById;
+const getUserById_error = AT_SSO_SERVICE_API.getUserById;
 
 // Mock Responses
 const data = {};
-const response = {
-    body: {
-        "id": "5fc8fce137c6fa549efd259a",
-        "name": "Norma",
-        "firstName": "Dolores",
-        "lastName": "Canalizo",
-        "email": "normacanalizo@mail.com",
-        "password": "14785",
-        "status": 1
-    },
-    status: 200
+
+// USERS
+const users_response = {
+  body: {
+    id: "604fc4def21087344f67ea38",
+    firstName: "firstTest",
+    lastName: "lastTest",
+    email: "admin.test@agilethought.com",
+    status: 1,
+    type: 2,
+  },
+  status: 200,
 };
 
-const response_error = {
-    body: {
-        "timestamp": "2020-12-02T17:46:32.409+00:00",
-        "status": 400,
-        "error": "Bad Request",
-        "message": "The priority field only accepts 3 values {High, Medium, Low}",
-        "path": "/user/"
-    },
-    status: 400
+const users_response_BadRequest = {
+  body: {
+    timestamp: "2020-12-02T17:46:32.409+00:00",
+    status: 400,
+    error: "Bad Request",
+    message: "The priority field only accepts 3 values {High, Medium, Low}",
+    path: "/users",
+  },
+  status: 400,
 };
 
-const data_add = {
-    "name": "User",
-    "firstName": "Test",
-    "lastName": "Example",
-    "email": "testuser@mail.com",
-    "password": "88794sd",
-    "status": 0
-};
-const response_add = {
-    body: {
-        id: "5fca50a9dea69968583a9635"
-    },
-    status: 200
+const users_data_add = {
+  firstName: "Guillermo",
+  lastName: "Ochoa",
+  email: "Ochoa@hotmail.com",
+  password: "jp23ba12b",
+  status: 1,
+  type: 2,
 };
 
-describe("TEST: at-sso.service", () => {
+const users_response_add = {
+  body: {
+    id: "604f8e2dac1a413c8aba77a5",
+  },
+  status: 200,
+};
 
-    beforeEach(() => {
-        nock("https://at-sso-api.herokuapp.com/api").get("/v1/user").reply(200, response);
-        nock("https://at-sso-api.herokuapp.com/api").get("/v1/user").reply(400, response_error);
-        nock("https://at-sso-api.herokuapp.com/api").post("/v1/user").reply(200, response_add);
-        });
+const users_data_add_error = {
+  email: "isabel.suarez@agilethought.com",
+  firstName: "Isabel",
+  lastName: "Suarez",
+  password: "isabel",
+  status: 1,
+  type: 2,
+};
 
-    it("Should Get All Users", () => {
-        return getAllUsers()
-            .then(response => {
+const users_response_add_BadRequest = {
+  body: {
+    timestamp: "2021-04-30T04:45:47.208",
+    status: 400,
+    error: "Bad Request",
+    message: "One or more fields are invalid",
+    path: "/api/v1/users",
+    details: [
+      {
+        fieldName: "Password",
+        errorMessage:
+          "Invalid input on field Password. Correct format is: 10 characters minimum with at least one lowercase letter, one uppercase letter, and one number.",
+      },
+    ],
+  },
+  status: 400,
+};
 
-                // Response Status
-                expect(response).to.have.status(200);
+const userResponse_GetUserById = {
+  body: {
+    id: "604fc4def21087344f67ea38",
+    type: 1,
+    firstName: "admin",
+    lastName: "AT",
+    email: "admin@agilethought.com",
+    status: 1,
+  },
+  status: 200,
+};
 
-                // Response
-                expect(response.data.body).to.have.property("id");
-            });
+const userResponse_GetUserById_NotFound = {
+  body: {
+    timestamp: "2021-04-27T22:47:33.661",
+    status: 404,
+    error: "Not Found",
+    message: "User was not found with the given id: 604fc4def21087344f67ea39",
+    path: "/api/v1/users/604fc4def21087344f67ea39",
+    details: null,
+  },
+  status: 404,
+};
+
+const userData_Login = {
+  email: "admin@agilethought.com",
+  password: "4Gil3th0ught",
+};
+
+const userResponse_Login = {
+  body: {
+    id: "604fc4def21087344f67ea38",
+  },
+  status: 200,
+};
+
+const userData_Login_Unauthorized = {
+  email: "admin@agilethought.com",
+  password: "4gil3th0ught",
+};
+
+const userResponse_Login_Unauthorized = {
+  body: {
+    timestamp: "2021-04-29T06:52:54.621",
+    status: 401,
+    error: "Unauthorized",
+    message: "Invalid login credentials.",
+    path: "/api/v1/login",
+    details: null,
+  },
+  status: 401,
+};
+
+const userData_Update = {
+  email: "prueba123@agilethought.com",
+  firstName: "Prueba123",
+  id: "123456",
+  lastName: "Prueba123",
+  password: "Prueba123",
+  status: 1,
+  type: 2,
+};
+
+const userResponse_Update = {
+  body: {
+    email: "prueba123@agilethought.com",
+    firstName: "Prueba123",
+    id: "123456",
+    lastName: "Prueba123",
+    password: "Prueba123",
+    status: 1,
+    type: 2,
+  },
+  status: 200,
+};
+
+const userResponse_Delete_NotFound = {
+  body: {
+    timestamp: "2021-04-29T07:19:32.961",
+    status: 404,
+    error: "Not Found",
+    message: "User was not found with the given id: 604fc4def21087344f67ea38",
+    path: "/api/v1/users/604fc4def21087344f67ea38",
+    details: null,
+  },
+  status: 404,
+};
+
+const userResponse_Delete = {};
+describe("TEST: at-sce-api.service.js", () => {
+  beforeEach(() => {
+    nock(AT_SERVICE_URI).get("/v1/users").reply(200, users_response);
+    nock(AT_SERVICE_URI).get("/v1/users").reply(400, users_response_BadRequest);
+
+    nock(AT_SERVICE_URI).post("/v1/users").reply(200, users_response_add);
+    nock(AT_SERVICE_URI)
+      .post("/v1/users")
+      .reply(400, users_response_add_BadRequest);
+
+    nock(AT_SERVICE_URI)
+      .get("/v1/users/604fc4def21087344f67ea38")
+      .reply(200, userResponse_GetUserById);
+    nock(AT_SERVICE_URI)
+      .get("/v1/users/604fc4def21087344f67ea39")
+      .reply(404, userResponse_GetUserById_NotFound);
+
+    nock(AT_SERVICE_URI).post("/v1/login").reply(200, userResponse_Login);
+    nock(AT_SERVICE_URI)
+      .post("/v1/login")
+      .reply(401, userResponse_Login_Unauthorized);
+
+    nock(AT_SERVICE_URI)
+      .put("/v1/users/123456")
+      .reply(200, userResponse_Update);
+    //nock(AT_SERVICE_URI).put("/v1/users/123456").reply(400, userResponse_Update_error);
+
+    nock(AT_SERVICE_URI)
+      .delete("/v1/users/604fc4def21087344f67ea38")
+      .reply(204, userResponse_Delete);
+    nock(AT_SERVICE_URI)
+      .delete("/v1/users/604fc4def21087344f67ea38")
+      .reply(404, userResponse_Delete_NotFound);
+  });
+
+  // Operation: Get ALL USERS - GET/api/v1/users - BE Success (Happy Path)
+  it("Should Get All Users - Call GET/api/v1/users - BE Success (Happy Path)", () => {
+    return getAllUsers().then((users_response) => {
+      // Response Status
+      expect(users_response).to.have.status(200);
+
+      // Response
+      expect(users_response.data.body).to.have.property("id");
+      expect(users_response.data.body).to.have.property("id");
     });
+  });
 
-    it("Should Get All Users - error", () => {
-        return getAllUsers_error()
-            .then(response_error => {
-                //console.log(response_error);
+  // Operation: Get ALL USERS - GET/api/v1/users - BE Error - 400 Bad Request
+  it("Should Get All Users - Call GET/api/v1/users - BE Error - 400 Bad Request", () => {
+    return getAllUsers_error()
+      .then((response) => {})
+      .catch((error) => {
+        expect(error.response.status).to.equal(400);
+        expect(error.response.data.body.error).to.equal("Bad Request");
+      });
+  });
 
-                // Response Status
-                expect(response_error).equals(undefined);
+  it("Should Create User - Call POST /api/v1/users - BE Success (Happy Path)", () => {
+    return createUser(users_data_add).then((response_add) => {
+      // Response Status
+      expect(response_add.status).to.equal(200);
 
-                // Response
-            });
+      // Response
+      expect(response_add.data.body).to.have.property("id");
+      expect(response_add.data.body)
+        .to.have.property("id")
+        .equals("604f8e2dac1a413c8aba77a5");
     });
+  });
 
-    
-    it("Should Add User", () => {
-        return addUser(data_add)
-            .then(response_add => {
-                //console.log(response_add);
+  it("Should Create User - Call POST /api/v1/users - BE Error - 400 Bad Request", () => {
+    return createUser_error(users_data_add_error)
+      .then((response) => {})
+      .catch((error) => {
+        expect(error.response.status).to.equal(400);
+        expect(error.response.data.body.error).to.equal("Bad Request");
+      });
+  });
+  it("Should Get User By Id - Call GET/api/v1/users/{id} - BE Success (Happy Path)", () => {
+    return getUserById("604fc4def21087344f67ea38").then((response) => {
+      // Response Status
+      expect(response.status).to.equal(200);
 
-                // Response Status
-                expect(response_add).to.have.status(200);
-
-                // Response
-                expect(response_add.data.body).to.have.property("id");
-            });
+      // Response
+      expect(response.data.body).to.have.property("id");
     });
+  });
 
+  it("Should Get User By Id - Call GET/api/v1/users/{id} - BE Error - 404 Not Found", () => {
+    return getUserById_error("604fc4def21087344f67ea39")
+      .then((response) => {})
+      .catch((error) => {
+        expect(error.response.status).to.equal(404);
+        expect(error.response.data.body.error).to.equal("Not Found");
+      });
+  });
+
+  it("Should Do Login - Call POST /api/v1/login - BE Success (Happy Path)", () => {
+    return login(userData_Login).then((response) => {
+      // Response Status
+      expect(response.status).to.equal(200);
+
+      // Response
+      expect(response.data.body).to.have.property("id");
+    });
+  });
+
+  it("Should do Login - Call POST /api/v1/login - BE Error - 401 Unauthorized)", () => {
+    return login_error(userData_Login_Unauthorized)
+      .then((response) => {})
+      .catch((error) => {
+        expect(error.response.status).to.equal(401);
+        expect(error.response.data.body.error).to.equal("Unauthorized");
+      });
+  });
+
+  it("Should Update User - PUT /api/v1/users - BE Success (Happy Path)", () => {
+    return updateUser(userData_Update).then((response) => {
+      // Response Status
+      expect(response.status).to.equal(200);
+
+      // Response
+      expect(response.data.body).to.have.property("id");
+      expect(response.data.body).to.have.property("id").equals("123456");
+    });
+  });
+
+  it("Should Delete User - Call DELETE /api/v1/users/{id} - BE Success (Happy Path)", () => {
+    return deleteUser("604fc4def21087344f67ea38").then((response) => {
+      // Response Status
+      expect(response.status).to.equal(204);
+
+      // Response
+      expect(response.data).to.be.empty;
+    });
+  });
+
+  it("Should Delete -  Call DELETE /api/v1/users/{id} - BE Error - 404 Not Found", () => {
+    return deleteUser_error("604fc4def21087344f67ea38")
+      .then((response) => {})
+      .catch((error) => {
+        expect(error.response.status).to.equal(404);
+        expect(error.response.data.body.error).to.equal("Not Found");
+      });
+  });
 });

@@ -1,5 +1,5 @@
 /**
- * AT SCE UI - AT Admin Controller.
+ * AT SSO UI - AT Admin Controller.
  * Copyright 2021 AgileThought, Inc.
  *
  * General functions for admin-controller.

@@ -26,7 +26,7 @@ describe("TEST: admin.controller.js", function () {
 
     beforeEach(function () {
         getAllUsersStub = sinon.stub(ssoServiceAPI, "getAllUsers");
-        addUserStub = sinon.stub(ssoServiceAPI, "addUser");
+        addUserStub = sinon.stub(ssoServiceAPI, "createUser");
         getUserByIdStub = sinon.stub(ssoServiceAPI, "getUserById");
         updateUserStub = sinon.stub(ssoServiceAPI, "updateUser");
         deleteUserStub = sinon.stub(ssoServiceAPI, "deleteUser");
@@ -39,7 +39,7 @@ describe("TEST: admin.controller.js", function () {
         deleteUserStub.restore();
     });
 
-    // AT-SCE - Admin - Index
+    // AT-SSO - Admin - Index
     it("Should render admin Index", function (done) {
         var res = { render: sinon.spy() };
         var req = {};
@@ -49,7 +49,7 @@ describe("TEST: admin.controller.js", function () {
         });
     });
 
-    // AT-SCE - Admin - Users List   
+    // AT-SSO - Admin - Users List   
     it("Should render admin users list view", function(done) {
         var res = { render: sinon.spy() };
         var req = { flash: sinon.spy() };
@@ -82,7 +82,7 @@ describe("TEST: admin.controller.js", function () {
         });
     });
 
-    // AT-SCE - Admin - Render Add User Form 
+    // AT-SSO - Admin - Render Add User Form 
     it("Should render add user form", function(done) {
         var res = { render: sinon.spy() };
         var req = { flash: sinon.spy() };
@@ -92,7 +92,7 @@ describe("TEST: admin.controller.js", function () {
         });
     });
 
-  // AT-SCE - Admin - Add User   
+  // AT- SSO - Admin - Add User   
     it("Should Add User Operation - error", function(done) {
         this.timeout(5000);
         var res = {
@@ -149,10 +149,10 @@ describe("TEST: admin.controller.js", function () {
         }).catch(done);
     });
 
-    //AT-SCE - Call Create USER - POST /api/v1/users endpoint
+    //AT-SSO - Call Create USER - POST /api/v1/users endpoint
 
 
-     // AT-SCE - Admin - Render Edit User Form
+     // AT-SSO - Admin - Render Edit User Form
     it("Should render edit user form", function(done) {
         this.timeout(5000);
         var res = { 
@@ -167,7 +167,7 @@ describe("TEST: admin.controller.js", function () {
         }).catch(done);
     });
 
-    // AT-SCE - Admin - Edit User
+    // AT-SSO - Admin - Edit User
     it("Should update user operation, user_id is null", function(done) {
         var res = {
             render: sinon.spy(),
@@ -210,10 +210,10 @@ describe("TEST: admin.controller.js", function () {
         }).catch(done);
     });
 
-    // AT-SCE - Call Update USER - PUT /api/v1/users endpoint
+    // AT-SSO - Call Update USER - PUT /api/v1/users endpoint
     
 
-    // AT-SCE - Admin - Delete User  
+    // AT-SSO - Admin - Delete User  
     it("Should delete user operation", function() {
         var res = { render: sinon.spy() };
         var req = {};
