@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 var packageJ = require("../../package.json");
-const { execSync } = require("child_process");
+//const { execSync } = require("child_process");
 
 router.get("/", async (_req, res, _next) => {
   const healthcheck = {
@@ -9,8 +9,8 @@ router.get("/", async (_req, res, _next) => {
     uptime: process.uptime(),
     message: "LIVE",
     timestamp: Date.now(),
-    branch: getGitNameBranch(),
-    commit: getGitCommitHash(),
+    //branch: getGitNameBranch(),
+    //commit: getGitCommitHash(),
     flags: {
       AT_SSO_SERVICE_URI_ENABLED: process.env.AT_SSO_SERVICE_URI_ENABLED,
       LOGIN_ENCRYPTION_ENABLED: process.env.LOGIN_ENCRYPTION_ENABLED,
@@ -33,10 +33,11 @@ router.get("/", async (_req, res, _next) => {
   }
 });
 
-function getGitCommitHash() {
+/*function getGitCommitHash() {
   return execSync("git rev-parse HEAD").toString().trim();
 }
 function getGitNameBranch() {
   return execSync("git name-rev --name-only HEAD").toString().trim();
-}
+}*/
+
 module.exports = router;

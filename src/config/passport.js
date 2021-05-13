@@ -17,7 +17,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const LOGIN_ENCRYPTION_ENABLED = process.env.LOGIN_ENCRYPTION_ENABLED;
 
 // MICROSERVICE - HEROKU - AT SSO API
-const ssoServiceAPI = require("../services/at-sso-api.service");
+const SSO_SERVICE_API = require("../services/at-sso-api.service");
 
 // Helpers
 const { encrypt } = require("../helpers/auth.helper");
@@ -38,7 +38,7 @@ passport.use(
 
       try {
         // Validate user
-        const userAuth = await ssoServiceAPI.login(request);
+        const userAuth = await SSO_SERVICE_API.login(request);
         console.debug("userAuth-->", userAuth);
 
         if (!userAuth && !userAuth.data.id) {
@@ -46,7 +46,7 @@ passport.use(
           return done(null, false, { message: "Not User found." });
         } else {
           // Get User details
-          const user = await ssoServiceAPI.getUserById(userAuth.data.id); 
+          const user = await SSO_SERVICE_API.getUserById(userAuth.data.id); 
           console.debug("user-->", user);
           return done(null, user);
         }
@@ -63,6 +63,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = await ssoServiceAPI.getUserById(id);
+  const user = await SSO_SERVICE_API.getUserById(id);
   done(null, user);
 });

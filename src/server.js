@@ -78,7 +78,7 @@ app.use("/", require("./routes/at-sso.routes"));
 // AT-SSO Routes - Admin
 app.use("/admin", require("./routes/admin.routes"));
 
-// AT-SSO Healthcheck
+// AT-SSO health-check
 app.use("/health-check", require("./routes/health-check.routes"));
 
 // Static files
