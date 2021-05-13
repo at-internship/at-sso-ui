@@ -1,6 +1,6 @@
 /**
  * AT SSO UI - AT SSO Service API Test.
- * Copyright 2020 AgileThought, Inc.
+ * Copyright 2021 AgileThought, Inc.
  *
  * Test for at-sso-api.service endpoint.
  *
@@ -15,19 +15,9 @@ const nock = require("nock");
 // MICROSERVICE - HEROKU - SSO
 const AT_SSO_SERVICE_API = require("../../services/at-sso-api.service");
 
-// MICROSERVICE - HEROKU - SCE
-const AT_SCE_SERVICE_URI = process.env.AT_SCE_SERVICE_URI;
-
 // MICROSERVICE - HEROKU - SS0
 const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
-
-// AT_SSO_SERVICE_URI_ENABLED FLAG
-const AT_SSO_SERVICE_URI_ENABLED = process.env.AT_SSO_SERVICE_URI_ENABLED;
-const AT_SERVICE_URI =
-  AT_SSO_SERVICE_URI_ENABLED == "true"
-    ? AT_SSO_SERVICE_URI
-    : AT_SCE_SERVICE_URI;
-console.log(`at-sce.service.test - AT_SERVICE_URI: ${AT_SERVICE_URI}`);
+console.log(`at-sce.service.test - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
 
 // Operations
 const login = AT_SSO_SERVICE_API.login;
@@ -208,37 +198,23 @@ const userResponse_Delete_NotFound = {
 const userResponse_Delete = {};
 describe("TEST: at-sce-api.service.js", () => {
   beforeEach(() => {
-    nock(AT_SERVICE_URI).get("/v1/users").reply(200, users_response);
-    nock(AT_SERVICE_URI).get("/v1/users").reply(400, users_response_BadRequest);
+    nock(AT_SSO_SERVICE_URI).get("/v1/users").reply(200, users_response);
+    nock(AT_SSO_SERVICE_URI).get("/v1/users").reply(400, users_response_BadRequest);
 
-    nock(AT_SERVICE_URI).post("/v1/users").reply(200, users_response_add);
-    nock(AT_SERVICE_URI)
-      .post("/v1/users")
-      .reply(400, users_response_add_BadRequest);
+    nock(AT_SSO_SERVICE_URI).post("/v1/users").reply(200, users_response_add);
+    nock(AT_SSO_SERVICE_URI).post("/v1/users").reply(400, users_response_add_BadRequest);
 
-    nock(AT_SERVICE_URI)
-      .get("/v1/users/604fc4def21087344f67ea38")
-      .reply(200, userResponse_GetUserById);
-    nock(AT_SERVICE_URI)
-      .get("/v1/users/604fc4def21087344f67ea39")
-      .reply(404, userResponse_GetUserById_NotFound);
+    nock(AT_SSO_SERVICE_URI).get("/v1/users/604fc4def21087344f67ea38").reply(200, userResponse_GetUserById);
+    nock(AT_SSO_SERVICE_URI).get("/v1/users/604fc4def21087344f67ea39").reply(404, userResponse_GetUserById_NotFound);
 
-    nock(AT_SERVICE_URI).post("/v1/login").reply(200, userResponse_Login);
-    nock(AT_SERVICE_URI)
-      .post("/v1/login")
-      .reply(401, userResponse_Login_Unauthorized);
+    nock(AT_SSO_SERVICE_URI).post("/v1/login").reply(200, userResponse_Login);
+    nock(AT_SSO_SERVICE_URI).post("/v1/login").reply(401, userResponse_Login_Unauthorized);
 
-    nock(AT_SERVICE_URI)
-      .put("/v1/users/123456")
-      .reply(200, userResponse_Update);
-    //nock(AT_SERVICE_URI).put("/v1/users/123456").reply(400, userResponse_Update_error);
+    nock(AT_SSO_SERVICE_URI).put("/v1/users/123456").reply(200, userResponse_Update);
+    //nock(AT_SSO_SERVICE_URI).put("/v1/users/123456").reply(400, userResponse_Update_error);
 
-    nock(AT_SERVICE_URI)
-      .delete("/v1/users/604fc4def21087344f67ea38")
-      .reply(204, userResponse_Delete);
-    nock(AT_SERVICE_URI)
-      .delete("/v1/users/604fc4def21087344f67ea38")
-      .reply(404, userResponse_Delete_NotFound);
+    nock(AT_SSO_SERVICE_URI).delete("/v1/users/604fc4def21087344f67ea38").reply(204, userResponse_Delete);
+    nock(AT_SSO_SERVICE_URI).delete("/v1/users/604fc4def21087344f67ea38").reply(404, userResponse_Delete_NotFound);
   });
 
   // Operation: Get ALL USERS - GET/api/v1/users - BE Success (Happy Path)

@@ -1,6 +1,6 @@
 /**
  * AT SSO UI - AT SSO Service API Test.
- * Copyright 2020 AgileThought, Inc.
+ * Copyright 2021 AgileThought, Inc.
  * 
  * Integration Test for at-sso-api endpoint.
  * 
@@ -14,20 +14,13 @@ const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 chai.use(chaiHttp);
 
-// MICROSERVICE - HEROKU - SCE
-const AT_SCE_SERVICE_URI = process.env.AT_SCE_SERVICE_URI;
-
 // MICROSERVICE - HEROKU - SS0
 const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
-
-// AT_SSO_SERVICE_URI_ENABLED FLAG
-const AT_SSO_SERVICE_URI_ENABLED = process.env.AT_SSO_SERVICE_URI_ENABLED;
-const AT_SERVICE_URI = (AT_SSO_SERVICE_URI_ENABLED == 'true') ? AT_SSO_SERVICE_URI : AT_SCE_SERVICE_URI;
-console.log(`at-sso.service.integration.test - AT_SERVICE_URI: ${AT_SERVICE_URI}`);
+console.log(`at-sso.service.integration.test - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
 
  // AT SCE Service API
-const SSO_SERVICE_API = AT_SERVICE_URI + '/v1/users';
-const SSO_SERVICE_API_400 = AT_SERVICE_URI + '/v1/usuarios';
+const SSO_SERVICE_API = AT_SSO_SERVICE_URI + '/v1/users';
+const SSO_SERVICE_API_400 = AT_SSO_SERVICE_URI + '/v1/usuarios';
 
 describe('INTEGRATION TEST: at-sso-service', () => {
     
