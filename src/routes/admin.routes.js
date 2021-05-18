@@ -1,3 +1,14 @@
+/**
+ * AT SSO UI - AT Admin Routes.
+ * Copyright 2021 AgileThought, Inc.
+ *
+ * General functions for admin-routes.
+ *
+ * @author @at-internship
+ * @version 1.0
+ *
+ */
+
 const express = require("express");
 const router = express.Router();
 const path = require('path');

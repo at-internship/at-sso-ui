@@ -1,5 +1,3 @@
-# at-sso-ui
-
 # Node JS Project for AT SSO UI (Internal app) 
 
 at-sso-ui app, is one of the 3 projects of this internship program, which is in charge of sso auth.
@@ -40,7 +38,7 @@ Heroku App - https://at-sso-ui.herokuapp.com/admin
 
 ### Code Coverage
 
-* $ npm install nock --save-dev
+* $ npm install nyc --save-dev
 * $ npm run coverage
 
 ## Tools

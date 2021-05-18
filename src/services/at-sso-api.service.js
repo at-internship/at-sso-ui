@@ -1,6 +1,6 @@
 /**
  * AT SSO UI - AT SSO Service API.
- * Copyright 2020 AgileThought, Inc.
+ * Copyright 2021 AgileThought, Inc.
  *
  * Functions for at-sso-api.service endpoint.
  *
@@ -12,6 +12,7 @@
 const axios = require("axios");
 const AT_SSO_SERVICE = {};
 
+<<<<<<< HEAD
 // MICROSERVICE - HEROKU - SCE
 const AT_SCE_SERVICE_URI = process.env.AT_SCE_SERVICE_URI;
 console.debug(`at-sce-api.service - AT_SCE_SERVICE_URI: ${AT_SCE_SERVICE_URI}`);
@@ -32,6 +33,11 @@ console.log(`at-sce-api.service - AT_SERVICE_URI: ${AT_SERVICE_URI}`);
 // PROD
 //const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
 //console.log("AT_SSO_SERVICE_URI:" + AT_SSO_SERVICE_URI);
+=======
+// MICROSERVICE - HEROKU - SSO
+const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
+console.debug(`at-sso-api.service - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
+>>>>>>> 484abdebbbfed0943ca0ab810b003c822457ab05
 
 // Operation: Login - POST /api/v1/login
 AT_SSO_SERVICE.login = (data) => {
@@ -53,8 +59,6 @@ AT_SSO_SERVICE.getAllUsers = () => {
         headers: {
             "content-type": "application/json",
         },
-    }).catch(function(error) {
-        console.log("Error: " + error.message);
     });
 };
 
@@ -66,10 +70,9 @@ AT_SSO_SERVICE.getUserById = (id) => {
     headers: {
       "content-type": "application/json",
     },
-  }).catch(function (error) {
-    console.log(`Error: ${error.message}`);
   });
 };
+
 // Operation; Create USER - POST /api/v1/users
 AT_SSO_SERVICE.createUser = (data) => {
   return axios({
@@ -81,6 +84,7 @@ AT_SSO_SERVICE.createUser = (data) => {
     },
   });
 };
+
 // Operation: Update USER - PUT /api/v1/users
 AT_SSO_SERVICE.updateUser = (data) => {
   return axios({
@@ -92,6 +96,7 @@ AT_SSO_SERVICE.updateUser = (data) => {
     },
   });
 };
+
 // Operation: Delete USER - DELETE /api/v1/users/{id}
 AT_SSO_SERVICE.deleteUser = (id) => {
   return axios({
@@ -102,6 +107,7 @@ AT_SSO_SERVICE.deleteUser = (id) => {
     },
   });
 };
+<<<<<<< HEAD
 //Add user
 AT_SSO_SERVICE.addUser = (data) => {
     return axios({
@@ -113,5 +119,7 @@ AT_SSO_SERVICE.addUser = (data) => {
         }, 
     });
 };
+=======
+>>>>>>> 484abdebbbfed0943ca0ab810b003c822457ab05
 
 module.exports = AT_SSO_SERVICE;
