@@ -26,6 +26,7 @@ adminCtrl.renderUserList = async(req, res) => {
     try {
         const responseUserList = await ssoServiceAPI.getAllUsers();
         if (responseUserList === null || responseUserList === undefined) {
+            console.error("Service unavailable: ssoServiceAPI.getAllUsers()");
             req.flash("error_msg", "Service unavailable");
         } else {
             users = responseUserList.data;
