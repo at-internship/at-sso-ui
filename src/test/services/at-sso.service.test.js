@@ -17,7 +17,7 @@ const AT_SSO_SERVICE_API = require("../../services/at-sso-api.service");
 
 // MICROSERVICE - HEROKU - SS0
 const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
-console.log(`at-sce.service.test - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
+console.log(`at-sso.service.test - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
 
 // Operations
 const login = AT_SSO_SERVICE_API.login;
