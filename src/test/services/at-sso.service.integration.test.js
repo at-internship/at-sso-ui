@@ -22,7 +22,7 @@ console.log(`at-sso.service.integration.test - AT_SSO_SERVICE_URI: ${AT_SSO_SERV
 const SSO_SERVICE_API = AT_SSO_SERVICE_URI + '/v1/users';
 const SSO_SERVICE_API_400 = AT_SSO_SERVICE_URI + '/v1/usuarios';
 
-describe('INTEGRATION TEST: at-sso-service', () => {
+describe.skip('INTEGRATION TEST: at-sso-service', () => {
     
     // Operation: Get ALL USERS - GET/api/v1/users - BE Success (Happy Path)
     it('INTEGRATION TEST: Should Get All Users - Call GET/api/v1/users - BE Success (Happy Path)', (done) => {
