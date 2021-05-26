@@ -1,13 +1,9 @@
 
 /**
-<<<<<<< HEAD
- * AT SCE UI - AT SCE HELPER.
-=======
  * AT SSO UI - AT SSO HELPER.
->>>>>>> 484abdebbbfed0943ca0ab810b003c822457ab05
  * Copyright 2021 AgileThought, Inc.
  *
- * Functions for auth.helper.
+ * Functions for auth.helper.js
  *
  * @author @at-internship
  * @version 1.0

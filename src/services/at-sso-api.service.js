@@ -6,15 +6,28 @@
  *
  * @author @at-internship
  * @version 1.0
+ * 
  */
 
 // Constants
 const axios = require("axios");
 const AT_SSO_SERVICE = {};
 
+// TODO: Just For Testing
+//require("dotenv").config();
+
 // MICROSERVICE - HEROKU - SSO
 const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
 console.debug(`at-sso-api.service - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
+
+// MICROSERVICE - HEROKU - SCE
+const AT_SCE_SERVICE_URI = process.env.AT_SCE_SERVICE_URI;
+console.debug(`at-sce-api.service - AT_SCE_SERVICE_URI: ${AT_SCE_SERVICE_URI}`);
+
+// AT_SSO_SERVICE_URI_ENABLED FLAG
+const AT_SSO_SERVICE_URI_ENABLED = process.env.AT_SSO_SERVICE_URI_ENABLED;
+const AT_SERVICE_URI = (AT_SSO_SERVICE_URI_ENABLED == 'true') ? AT_SSO_SERVICE_URI : AT_SCE_SERVICE_URI;
+console.log(`at-sce-api.service - AT_SERVICE_URI: ${AT_SERVICE_URI}`);
 
 // AT_SSO_WEB_TOKEN_CLIENT & SECRET
 const AT_SSO_WEB_TOKEN_CLIENT = process.env.AT_SSO_WEB_TOKEN_CLIENT;
@@ -29,8 +42,7 @@ AT_SSO_SERVICE.login = (data) => {
   var qs = require('qs');
   return axios({
     method: "POST",
-    url: `${AT_SSO_SERVICE_URI}/v1/login`,
-    data: data,
+    url: `${AT_SERVICE_URI}/v1/login`,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': `Basic ${authorization_token}`
@@ -43,7 +55,7 @@ AT_SSO_SERVICE.login = (data) => {
 AT_SSO_SERVICE.getAllUsers = () => {
     return axios({
       method: "GET",
-      url: `${AT_SSO_SERVICE_URI}/v1/users`,
+      url: `${AT_SERVICE_URI}/v1/users`,
       headers: {
         "Content-Type": "application/json",
         'Authorization': `Basic ${authorization_token}`
@@ -55,7 +67,7 @@ AT_SSO_SERVICE.getAllUsers = () => {
 AT_SSO_SERVICE.getUserById = (id) => {
   return axios({
     method: "GET",
-    url: `${AT_SSO_SERVICE_URI}/v1/users/${id}`,
+    url: `${AT_SERVICE_URI}/v1/users/${id}`,
     headers: {
       "Content-Type": "application/json",
       'Authorization': `Basic ${authorization_token}`
@@ -67,7 +79,7 @@ AT_SSO_SERVICE.getUserById = (id) => {
 AT_SSO_SERVICE.createUser = (data) => {
   return axios({
     method: "POST",
-    url: `${AT_SSO_SERVICE_URI}/v1/users`,
+    url: `${AT_SERVICE_URI}/v1/users`,
     data: data,
     headers: {
       "Content-Type": "application/json",
@@ -80,7 +92,7 @@ AT_SSO_SERVICE.createUser = (data) => {
 AT_SSO_SERVICE.updateUser = (data) => {
   return axios({
     method: "PUT",
-    url: `${AT_SSO_SERVICE_URI}/v1/users/${data.id}`,
+    url: `${AT_SERVICE_URI}/v1/users/${data.id}`,
     data: data,
     headers: {
       "Content-Type": "application/json",
@@ -93,7 +105,7 @@ AT_SSO_SERVICE.updateUser = (data) => {
 AT_SSO_SERVICE.deleteUser = (id) => {
   return axios({
     method: "DELETE",
-    url: `${AT_SSO_SERVICE_URI}/v1/users/${id}`,
+    url: `${AT_SERVICE_URI}/v1/users/${id}`,
     headers: {
       "Content-Type": "application/json",
       'Authorization': `Basic ${authorization_token}`

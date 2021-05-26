@@ -2,7 +2,7 @@
  * AT SSO UI - AT SSO Controller.
  * Copyright 2021 AgileThought, Inc.
  *
- * General functions for at-sso-controller.
+ * General functions for at-sce.controller.js
  *
  * @author @at-internship
  * @version 1.0

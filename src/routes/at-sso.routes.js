@@ -1,8 +1,8 @@
 /**
- * AT SSO UI - AT SCE Routes.
+ * AT SSO UI - AT SSO Routes.
  * Copyright 2021 AgileThought, Inc.
  *
- * General functions for at-sce-routes.
+ * General functions for at-sso-routes.js
  *
  * @author @at-internship
  * @version 1.0

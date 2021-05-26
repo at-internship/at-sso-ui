@@ -55,4 +55,12 @@ describe('AT SSO Controller test', function (){
         });
     });
 
+    it("Should Team - Success", function(){
+        var req = {};
+        var res = { render: sinon.spy() };
+        var view = AT_SSO_CONTROLLER.team(req, res).then(function() {
+            expect(res.render.calledOnce).to.be.true;
+        });
+    })
+
 });

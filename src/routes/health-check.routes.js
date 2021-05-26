@@ -1,3 +1,14 @@
+/**
+ * AT SSO UI - AT HEALTH CHECK Routes.
+ * Copyright 2021 AgileThought, Inc.
+ *
+ * General functions for health-check.routes.js
+ *
+ * @author @at-internship
+ * @version 1.0
+ *
+ */
+
 const express = require("express");
 const router = express.Router();
 var packageJ = require("../../package.json");
