@@ -30,7 +30,6 @@ AT_SSO_SERVICE.login = (data) => {
   return axios({
     method: "POST",
     url: `${AT_SSO_SERVICE_URI}/v1/login`,
-    data: data,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': `Basic ${authorization_token}`
