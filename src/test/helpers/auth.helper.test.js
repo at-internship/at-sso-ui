@@ -1,0 +1,16 @@
+// Constants
+const sinon = require("sinon");
+const expect = require("chai").expect;
+
+// AT SSO Auth Helper
+const AUTH_HELPER = require("../../helpers/auth.helper");
+
+describe("TEST: auth.helper.js", function() {
+    
+    it("Should verify if is Authenticathed User - Success", function() {
+    });
+
+    it("Should verify if is not Authenticathed User - Error", function() {
+    });
+
+});
