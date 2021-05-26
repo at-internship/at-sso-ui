@@ -42,11 +42,7 @@ AT_SSO_SERVICE.login = (data) => {
   var qs = require('qs');
   return axios({
     method: "POST",
-<<<<<<< HEAD
     url: `${AT_SERVICE_URI}/v1/login`,
-=======
-    url: `${AT_SSO_SERVICE_URI}/v1/login`,
->>>>>>> d97aca338b8ed47d9b06af712bc2f4c94d74055d
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': `Basic ${authorization_token}`
