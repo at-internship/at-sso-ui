@@ -2,21 +2,22 @@
  * AT SSO UI - AT Admin Routes.
  * Copyright 2021 AgileThought, Inc.
  *
- * General functions for admin-routes.
+ * General functions for admin.routes.js
  *
  * @author @at-internship
  * @version 1.0
  *
  */
 
+// Constants
 const express = require("express");
 const router = express.Router();
 const path = require('path');
 
-// Helpers
+// AT SSO Auth Helper
 const { isAdmin } = require("../helpers/auth.helper");
 
-// Admin Controller
+// AT SSO Admin Controller
 const {
     renderIndex,
     renderUserList,
@@ -27,7 +28,7 @@ const {
     deleteUser
 } = require("../controllers/admin.controller");
 
-// ============= Sub Routes =============
+// ============= Sub Routes ============= //
 
 // AT-SSO - Admin - Index
 router.get("/", isAdmin, renderIndex);

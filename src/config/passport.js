@@ -12,14 +12,15 @@
 // Constants
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+let userAuthToken = {};
 
 // LOGIN_ENCRYPTION_ENABLED FLAG
 const LOGIN_ENCRYPTION_ENABLED = process.env.LOGIN_ENCRYPTION_ENABLED;
 
-// MICROSERVICE - HEROKU - AT SSO API
-const SSO_SERVICE_API = require("../services/at-sso-api.service");
+// AT SSO API Service
+const AT_SSO_API_SERVICE = require("../services/at-sso-api.service");
 
-// Helpers
+// AT SCE Auth Helper
 const { encrypt } = require("../helpers/auth.helper");
 
 passport.use(
@@ -31,27 +32,29 @@ passport.use(
     async (email, password, done) => {
       // Match Email's User
       const request = {
-        email: email,
+        grant_type: 'password',
+        username: email,
         password: (LOGIN_ENCRYPTION_ENABLED == 'true') ? (await encrypt(password)).content : password
       };
-      console.debug("Request-->", request);
+      console.debug("passport.js - Request-->", request);
 
       try {
         // Validate user
-        const userAuth = await SSO_SERVICE_API.login(request);
-        console.debug("userAuth-->", userAuth);
+        const userAuth = await AT_SSO_API_SERVICE.login(request);
+        console.debug("passport.js - AT_SSO_API_SERVICE.login - userAuth-->", userAuth);
 
         if (!userAuth && !userAuth.data.id) {
           console.error("Not User found: ", email);
           return done(null, false, { message: "Not User found." });
         } else {
           // Get User details
-          const user = await SSO_SERVICE_API.getUserById(userAuth.data.id); 
-          console.debug("user-->", user);
+          const user = await AT_SSO_API_SERVICE.getUserById(userAuth.data._id); 
+          console.debug("passport.js - AT_SSO_API_SERVICE.getUserById - User-->", user);
+          userAuthToken = userAuth.data;
           return done(null, user);
         }
       } catch (err) {
-        console.error(err.message);
+        console.error("passport.js - ", err.message);
         return done(null, false, { message: "Not User found." });
       }
     }
@@ -63,6 +66,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = await SSO_SERVICE_API.getUserById(id);
+  const user = await AT_SSO_API_SERVICE.getUserById(id);
+  user.data["userAuth"] = userAuthToken;
   done(null, user);
 });

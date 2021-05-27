@@ -9,8 +9,8 @@
  *
  */
 
-//AT Admin Controller
-const adminCtrl = {};
+ // AT SSO Admin Controller
+const ADMIN_CONTROLLER = {};
 
 // CREATE_USER_ENCRYPTION_ENABLED FLAG
 const CREATE_USER_ENCRYPTION_ENABLED = process.env.CREATE_USER_ENCRYPTION_ENABLED;
@@ -18,27 +18,27 @@ const CREATE_USER_ENCRYPTION_ENABLED = process.env.CREATE_USER_ENCRYPTION_ENABLE
 // UPDATE_USER_ENCRYPTION_ENABLED FLAG
 const UPDATE_USER_ENCRYPTION_ENABLED = process.env.UPDATE_USER_ENCRYPTION_ENABLED;
 
-// MICROSERVICE - HEROKU - SSO
-const SSO_SERVICE_API = require("../services/at-sso-api.service");
+// AT SSO API Servcie
+const AT_SSO_API_SERVICE = require("../services/at-sso-api.service");
 
-//Helpers
+// AT SSO Auth Helper
 const { encrypt } = require("../helpers/auth.helper");
 
 // AT-SSO - Admin - Index
-adminCtrl.renderIndex = async(req, res) => {
-    console.log("--> adminCtrl.renderIndex");
+ADMIN_CONTROLLER.renderIndex = async(req, res) => {
+    console.log("--> ADMIN_CONTROLLER.renderIndex");
     res.render("admin/index");
 };
 
 // AT-SSO - Admin - Users - Render User List
-adminCtrl.renderUserList = async(req, res) => {
-    console.log("--> adminCtrl.renderUserList");
+ADMIN_CONTROLLER.renderUserList = async(req, res) => {
+    console.log("--> ADMIN_CONTROLLER.renderUserList");
     let users = [];
 
     try {
-        const responseUserList = await SSO_SERVICE_API.getAllUsers();
+        const responseUserList = await AT_SSO_API_SERVICE.getAllUsers();
         if (responseUserList === null || responseUserList === undefined) {
-            console.error("Service unavailable: SSO_SERVICE_API.getAllUsers()");
+            console.error("Service unavailable: AT_SSO_API_SERVICE.getAllUsers()");
             req.flash("error_msg", "Service unavailable");
         } else {
             users = responseUserList.data;
@@ -51,14 +51,14 @@ adminCtrl.renderUserList = async(req, res) => {
 };
 
 // AT-SSO - Admin - Users - Render Add User Form
-adminCtrl.renderAddUserForm = async(req, res) => {
-    console.log("--> adminCtrl.renderAddUserForm");
+ADMIN_CONTROLLER.renderAddUserForm = async(req, res) => {
+    console.log("--> ADMIN_CONTROLLER.renderAddUserForm");
     res.render("admin/user/add-user");
 };
 
 // AT-SSO - Admin - Users - Add User
-adminCtrl.addUser = async (req, res) => {
-  console.log("--> adminCtrl.addUser");
+ADMIN_CONTROLLER.addUser = async (req, res) => {
+  console.log("--> ADMIN_CONTROLLER.addUser");
   
   try {
     const {
@@ -92,7 +92,7 @@ adminCtrl.addUser = async (req, res) => {
     }
 
     if (userErrors.length > 0) {
-      console.debug("--> adminCtrl.addUser - Validations error");
+      console.debug("--> ADMIN_CONTROLLER.addUser - Validations error");
       res.render("admin/user/add-user", {
         userErrors,
         user_firstName,
@@ -112,16 +112,16 @@ adminCtrl.addUser = async (req, res) => {
       password: (CREATE_USER_ENCRYPTION_ENABLED == 'true') ? (await encrypt(user_password)).content : user_password,
       status: parseInt(user_status),
     };
-    //console.debug("request-->", request);
+    console.debug("admin.controller.js - addUser - request-->", request);
 
     // Call Create USER - POST /api/v1/users endpoint
-    await SSO_SERVICE_API.createUser(request).then((result) => {
+    await AT_SSO_API_SERVICE.createUser(request).then((result) => {
       if (!result) {
-        console.error("Service unavailable: SSO_SERVICE_API.createUser()");
+        console.error("Service unavailable: AT_SSO_API_SERVICE.createUser()");
         req.flash("error_msg", "Service unavailable");
         res.redirect("/admin/user");
       }
-      console.debug("Result-->", result);
+      console.debug("admin.controller.js - addUser - Result-->", result);
     });
 
     // Redirect
@@ -138,18 +138,18 @@ adminCtrl.addUser = async (req, res) => {
 };
   
 // AT-SSO - Admin - Users - Render Edit User Form
-adminCtrl.renderEditUserForm = async (req, res) => {
-  console.log("--> adminCtrl.renderEditUserForm", req.params.id);
+ADMIN_CONTROLLER.renderEditUserForm = async (req, res) => {
+  console.log("--> ADMIN_CONTROLLER.renderEditUserForm", req.params.id);
   let user = [];
 
   try {
-    const responseUserbyId = await SSO_SERVICE_API.getUserById(req.params.id);
+    const responseUserbyId = await AT_SSO_API_SERVICE.getUserById(req.params.id);
     if (!responseUserbyId) {
-      console.error("Service unavailable: SSO_SERVICE_API.getUserById()");
+      console.error("Service unavailable: AT_SSO_API_SERVICE.getUserById()");
       req.flash("error_msg", "Service unavaible");
     } else {
       user = responseUserbyId.data;
-      console.debug(JSON.stringify(responseUserbyId.data));
+      console.debug("admin.controller.js - renderEditUserForm -", JSON.stringify(responseUserbyId.data));
     }
   } catch (err) {
     console.err(err.message);
@@ -159,15 +159,17 @@ adminCtrl.renderEditUserForm = async (req, res) => {
 };
   
 // AT-SSO - Admin - Users - Edit User
-adminCtrl.updateUser = async (req, res) => {
-  console.log("--> adminCtrl.updateUser");
+ADMIN_CONTROLLER.updateUser = async (req, res) => {
+  console.log("--> ADMIN_CONTROLLER.updateUser");
 
   const user_id = req.params.id;
-  console.log("--> user id:" + user_id);
+  console.debug("admin.controller.js - updateUser - user id-->" + user_id);
+
   if (!user_id) {
     req.flash("error_msg", "User Not Authorized");
     return res.redirect("/admin/user");
   }
+
   try {
     const {
       user_type,
@@ -184,10 +186,10 @@ adminCtrl.updateUser = async (req, res) => {
       userErrors.push({ text: "Please type a Type." });
     }
     if (!user_firstName) {
-      userErrors.push({ text: "Please type a FirstName." });
+      userErrors.push({ text: "Please type a First Name." });
     }
     if (!user_lastName) {
-      userErrors.push({ text: "Please type a LastName." });
+      userErrors.push({ text: "Please type a Last Name." });
     }
     if (!user_email) {
       userErrors.push({ text: "Please type a Email." });
@@ -197,7 +199,7 @@ adminCtrl.updateUser = async (req, res) => {
     }
 
     if (userErrors.length > 0) {
-      console.debug("--> adminCtrl.updateUser - Validations error");
+      console.debug("--> ADMIN_CONTROLLER.updateUser - Validations error");
       res.render("admin/user/edit-user", {
         userErrors,
         user_id,
@@ -219,16 +221,16 @@ adminCtrl.updateUser = async (req, res) => {
       password: (UPDATE_USER_ENCRYPTION_ENABLED == 'true') ? (await encrypt(user_password)).content : user_password,
       status: parseInt(user_status),
     };
-    //console.debug("Request-->", request);
+    console.debug("admin.controller.js - updateUser - Request-->", request);
 
     // Call Update USER - PUT /api/v1/users endpoint
-    await SSO_SERVICE_API.updateUser(request).then((result) => {
+    await AT_SSO_API_SERVICE.updateUser(request).then((result) => {
       if (!result) {
-        console.error("Service unavailable: SSO_SERVICE_API.updateUser()");
+        console.error("Service unavailable: AT_SSO_API_SERVICE.updateUser()");
         req.flash("error_msg", "Service unavailable");
         res.redirect("/admin/user");
       }
-      console.debug("Result-->", result);
+      console.debug("admin.controller.js - updateUser - Result-->", result);
     });
 
     // Redirect
@@ -245,15 +247,16 @@ adminCtrl.updateUser = async (req, res) => {
 };
   
 // AT-SSO - Admin - Users - Delete User
-adminCtrl.deleteUser = async (req, res) => {
-  console.log("--> adminCtrl.deleteUser");
+ADMIN_CONTROLLER.deleteUser = async (req, res) => {
+  console.log("--> ADMIN_CONTROLLER.deleteUser");
+  
   const user_id = req.params.id;
-  console.debug(user_id);
+  console.debug("admin.controller.js - deleteUser - user_id-->", user_id);
 
   try {
-    const response = await SSO_SERVICE_API.deleteUser(user_id);
+    const response = await AT_SSO_API_SERVICE.deleteUser(user_id);
     if (!response) {
-      console.error("Service unavailable: SSO_SERVICE_API.deleteUser()");
+      console.error("Service unavailable: AT_SSO_API_SERVICE.deleteUser()");
       req.flash("error_msg", "Service unavailable");
       es.redirect("/admin/user");
     }
@@ -270,4 +273,4 @@ adminCtrl.deleteUser = async (req, res) => {
   }
 };
 
-module.exports = adminCtrl;
+module.exports = ADMIN_CONTROLLER;

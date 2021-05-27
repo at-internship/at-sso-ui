@@ -1,25 +1,26 @@
 /**
- * AT SSO UI - AT SCE Routes.
+ * AT SSO UI - AT SSO Routes.
  * Copyright 2021 AgileThought, Inc.
  *
- * General functions for at-sce-routes.
+ * General functions for at-sso-routes.
  *
  * @author @at-internship
  * @version 1.0
  *
  */
 
+// Constants
 const express = require("express");
 const router = express.Router();
 const path = require('path');
 
-// Admin Controller
+// AT SSO Controller
 const { renderSigninForm, signin, signout, home, team } = require("../controllers/at-sso.controller");
 
-// Helpers
+// AT SSO Auth Helper
 const { isAuthenticated } = require("../helpers/auth.helper");
 
-// ============= Sub Routes =============
+// ============= Sub Routes ============= //
 
 // AT-SSO - Index
 router.get('/', renderSigninForm);

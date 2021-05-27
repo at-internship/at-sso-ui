@@ -1,8 +1,8 @@
 /**
- * AT SSO UI - AT SSO Service API.
+ * AT SSO UI - AT SSO API Service.
  * Copyright 2021 AgileThought, Inc.
  *
- * Functions for at-sso-api.service endpoint.
+ * Functions for at-sso-api endpoint.
  *
  * @author @at-internship
  * @version 1.0
@@ -12,19 +12,33 @@
 const axios = require("axios");
 const AT_SSO_SERVICE = {};
 
+// TODO: Just For Testing
+// require("dotenv").config();
+
 // MICROSERVICE - HEROKU - SSO
 const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
 console.debug(`at-sso-api.service - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
 
+// AT_SSO_WEB_TOKEN_CLIENT & SECRET
+const AT_SSO_WEB_TOKEN_CLIENT = process.env.AT_SSO_WEB_TOKEN_CLIENT;
+const AT_SSO_WEB_TOKEN_SECRET = process.env.AT_SSO_WEB_TOKEN_SECRET;
+
+const token = `${AT_SSO_WEB_TOKEN_CLIENT}:${AT_SSO_WEB_TOKEN_SECRET}`;
+const authorization_token = Buffer.from(token).toString('base64'); 
+console.debug("authorization_token-->", authorization_token );
+
 // Operation: Login - POST /api/v1/login
 AT_SSO_SERVICE.login = (data) => {
+  var qs = require('qs');
+
   return axios({
     method: "POST",
     url: `${AT_SSO_SERVICE_URI}/v1/login`,
-    data: data,
     headers: {
-      "content-type": "application/json",
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': `Basic ${authorization_token}`
     },
+    data: qs.stringify(data)
   });
 };
 
@@ -34,7 +48,8 @@ AT_SSO_SERVICE.getAllUsers = () => {
         method: "GET",
         url: `${AT_SSO_SERVICE_URI}/v1/users`,
         headers: {
-            "content-type": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': `Basic ${authorization_token}`
         },
     });
 };
@@ -45,7 +60,8 @@ AT_SSO_SERVICE.getUserById = (id) => {
     method: "GET",
     url: `${AT_SSO_SERVICE_URI}/v1/users/${id}`,
     headers: {
-      "content-type": "application/json",
+      "Content-Type": "application/json",
+      'Authorization': `Basic ${authorization_token}`
     },
   });
 };
@@ -57,7 +73,8 @@ AT_SSO_SERVICE.createUser = (data) => {
     url: `${AT_SSO_SERVICE_URI}/v1/users`,
     data: data,
     headers: {
-      "content-type": "application/json",
+      "Content-Type": "application/json",
+      'Authorization': `Basic ${authorization_token}`
     },
   });
 };
@@ -69,7 +86,8 @@ AT_SSO_SERVICE.updateUser = (data) => {
     url: `${AT_SSO_SERVICE_URI}/v1/users/${data.id}`,
     data: data,
     headers: {
-      "content-type": "application/json",
+      "Content-Type": "application/json",
+      'Authorization': `Basic ${authorization_token}`
     },
   });
 };
@@ -80,7 +98,8 @@ AT_SSO_SERVICE.deleteUser = (id) => {
     method: "DELETE",
     url: `${AT_SSO_SERVICE_URI}/v1/users/${id}`,
     headers: {
-      "content-type": "application/json",
+      "Content-Type": "application/json",
+      'Authorization': `Basic ${authorization_token}`
     },
   });
 };
