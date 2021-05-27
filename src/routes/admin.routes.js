@@ -1,8 +1,23 @@
+/**
+ * AT SSO UI - AT Admin Routes.
+ * Copyright 2021 AgileThought, Inc.
+ *
+ * General functions for admin.routes.js
+ *
+ * @author @at-internship
+ * @version 1.0
+ *
+ */
+
+// Constants
 const express = require("express");
 const router = express.Router();
 const path = require('path');
 
-// Admin Controller
+// AT SSO Auth Helper
+const { isAdmin } = require("../helpers/auth.helper");
+
+// AT SSO Admin Controller
 const {
     renderIndex,
     renderUserList,
@@ -13,28 +28,27 @@ const {
     deleteUser
 } = require("../controllers/admin.controller");
 
-// Helpers
-// const { isAdmin } = require("../helpers/auth");
-
-// ============= Sub Routes =============
+// ============= Sub Routes ============= //
 
 // AT-SSO - Admin - Index
-router.get("/", renderIndex);
+router.get("/", isAdmin, renderIndex);
 
 // AT-SSO - Admin - Users - Render User List
-router.get("/user", renderUserList);
+router.get("/user", isAdmin, renderUserList);
 
 // AT-SSO - Admin - Users - Render Add User Form
-router.get("/user/add", renderAddUserForm);
+router.get("/user/add", isAdmin, renderAddUserForm);
+
 // AT-SSO - Admin - Users - Add User
-router.post("/user/add", addUser);
+router.post("/user/add", isAdmin, addUser);
 
 // AT-SSO - Admin - Users - Render Edit User Form
-router.get("/user/edit/:id", renderEditUserForm);
+router.get("/user/edit/:id", isAdmin, renderEditUserForm);
+
 // AT-SSO - Admin - Users - Edit User
-router.put("/user/edit/:id", updateUser);
+router.put("/user/edit/:id", isAdmin, updateUser);
 
 // AT-SSO - Admin - Users - Delete User
-router.get("/user/delete/:id", deleteUser);
+router.get("/user/delete/:id", isAdmin, deleteUser);
 
 module.exports = router;

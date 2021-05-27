@@ -1,6 +1,6 @@
 /**
  * AT SSO UI - AT SSO Service API Test.
- * Copyright 2020 AgileThought, Inc.
+ * Copyright 2021 AgileThought, Inc.
  * 
  * Integration Test for at-sso-api endpoint.
  * 
@@ -14,46 +14,55 @@ const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 chai.use(chaiHttp);
 
-// AT SSO Service API
-const ssoServiceAPI = 'https://at-sso-api.herokuapp.com/api' + '/v1/user';
-const ssoServiceAPI_400 = 'https://at-sso-api.herokuapp.com/api' + '/v1/users';
+// MICROSERVICE - HEROKU - SS0
+const AT_SSO_SERVICE_URI = process.env.AT_SSO_SERVICE_URI;
+console.log(`at-sso.service.integration.test - AT_SSO_SERVICE_URI: ${AT_SSO_SERVICE_URI}`);
 
-describe('INTEGRATION TEST: at-sso-service', () => {
+ // AT SCE Service API
+const SSO_SERVICE_API = AT_SSO_SERVICE_URI + '/v1/users';
+const SSO_SERVICE_API_400 = AT_SSO_SERVICE_URI + '/v1/usuarios';
 
-    /*it('Should Get All Users - 200', (done) => {
-        chai.request(ssoServiceAPI)
+describe.skip('INTEGRATION TEST: at-sso-service', () => {
+    
+    // Operation: Get ALL USERS - GET/api/v1/users - BE Success (Happy Path)
+    it('INTEGRATION TEST: Should Get All Users - Call GET/api/v1/users - BE Success (Happy Path)', (done) => {
+        chai.request(SSO_SERVICE_API)
             .get('/')
             .end(function (err, res) {
-                //console.log(res.body);
+                //console.debug(res.body);
 
                 // Response Status
                 expect(res).to.have.status(200);
-
                 done();
             });
     });
 
-    it('Should Fail Get All Users - 400', (done) => {
-        chai.request(ssoServiceAPI_400)
+    // Operation: Get ALL USERS - GET/api/v1/users - BE Error - 400 Bad Request
+    it('INTEGRATION TEST: Should Fail Get All Users - Call GET/api/v1/users - BE Error - 400 Bad Request', (done) => {
+        chai.request(SSO_SERVICE_API_400)
             .get('/')
             .end(function(err, res) {
-                console.log(res.body)
+                //console.debug(res.body)
 
                 // Response Status
                 expect(res).to.have.status(404);
 
                 // Response message
                 expect(res).to.have.property('body');
+                
                 expect(res.body).to.have.property('status');
                 expect(res.body).to.have.property('status').equals(404);
+                
                 expect(res.body).to.have.property('error');
                 expect(res.body).to.have.property('error').equals('Not Found');
+                
                 expect(res.body).to.have.property('message');
-                expect(res.body).to.have.property('message').equals('');
+                expect(res.body).to.have.property('message').equals('No message available');
+
                 expect(res.body).to.have.property('path');
-                expect(res.body).to.have.property('path').equals('/api/v1/users/');
+                expect(res.body).to.have.property('path').equals('/api/v1/usuarios/');
 
                 done();
             });
-    });*/
+    });
 });

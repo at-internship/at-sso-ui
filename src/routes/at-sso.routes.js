@@ -1,14 +1,26 @@
+/**
+ * AT SSO UI - AT SSO Routes.
+ * Copyright 2021 AgileThought, Inc.
+ *
+ * General functions for at-sso.routes.js
+ *
+ * @author @at-internship
+ * @version 1.0
+ *
+ */
+
+// Constants
 const express = require("express");
 const router = express.Router();
 const path = require('path');
 
-// Admin Controller
+// AT SSO Controller
 const { renderSigninForm, signin, signout, home, team } = require("../controllers/at-sso.controller");
 
-// Helpers
-// const { isAdmin } = require("../helpers/auth");
+// AT SSO Auth Helper
+const { isAuthenticated } = require("../helpers/auth.helper");
 
-// ============= Sub Routes =============
+// ============= Sub Routes ============= //
 
 // AT-SSO - Index
 router.get('/', renderSigninForm);
@@ -21,9 +33,9 @@ router.post("/signin", signin);
 router.get("/signout", signout);
 
 // AT-SSO - Home
-router.get("/home", home);
+router.get("/home", isAuthenticated, home);
 
 // AT-SSO - Our Team
-router.get("/team", team);
+router.get("/team", isAuthenticated, team);
 
 module.exports = router;

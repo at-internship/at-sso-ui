@@ -6,21 +6,43 @@ const morgan = require("morgan");
 const methodOverride = require("method-override");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
 
 // Initializations
 const app = express();
+require("./config/passport");
 
 // Settings
-app.set('port', process.env.PORT || 4000);
-app.set('views', path.join(__dirname, 'views'));
+app.set("port", process.env.PORT || 4000);
+app.set("views", path.join(__dirname, "views"));
 app.engine(
-    ".hbs",
-    exphbs({
-        defaultLayout: "main",
-        layoutsDir: path.join(app.get("views"), "layouts"),
-        partialsDir: path.join(app.get("views"), "partials"),
-        extname: ".hbs",
-    })
+  ".hbs",
+  exphbs({
+    defaultLayout: "main",
+    layoutsDir: path.join(app.get("views"), "layouts"),
+    partialsDir: path.join(app.get("views"), "partials"),
+    extname: ".hbs",
+
+    // Helpers
+    helpers: {
+      checked: function (a, b) {
+        if (a == undefined) return "";
+        return a == b ? "checked" : "";
+      },
+      selected: function (a, b) {
+        if (a == undefined) return "";
+        return a == b ? "selected" : "";
+      },
+      statusHelper: function (a) {
+        if (a == undefined) return "";
+        return a == 1 ? "Active" : "Inactive";
+      },
+      statusButtonHelper: function (a) {
+        if (a == undefined) return "";
+        return a == 1 ? "btn-success" : "btn-secondary";
+      },
+    },
+  })
 );
 app.set("view engine", ".hbs");
 
@@ -35,6 +57,8 @@ app.use(
         saveUninitialized: true,
     })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(flash());
 
 // Global Middlewares
@@ -54,7 +78,7 @@ app.use("/", require("./routes/at-sso.routes"));
 // AT-SSO Routes - Admin
 app.use("/admin", require("./routes/admin.routes"));
 
-// AT-SCE Healthcheck
+// AT-SSO Health check
 app.use("/health-check", require("./routes/health-check.routes"));
 
 // Static files
