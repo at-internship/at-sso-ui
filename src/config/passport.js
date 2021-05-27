@@ -43,12 +43,13 @@ passport.use(
         const userAuth = await AT_SSO_API_SERVICE.login(request);
         console.debug("passport.js - AT_SSO_API_SERVICE.login - userAuth-->", userAuth);
 
-        if (!userAuth && !userAuth.data.id) {
+        if (!userAuth && !userAuth.data._id) {
           console.error("Not User found: ", email);
           return done(null, false, { message: "Not User found." });
         } else {
           // Get User details
           const user = await AT_SSO_API_SERVICE.getUserById(userAuth.data._id); 
+          user.data["userAuth"] = userAuth.data;
           console.debug("passport.js - AT_SSO_API_SERVICE.getUserById - User-->", user);
           userAuthToken = userAuth.data;
           return done(null, user);
@@ -62,6 +63,7 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
+  user.data["userAuth"] = userAuthToken;
   done(null, user.data.id);
 });
 

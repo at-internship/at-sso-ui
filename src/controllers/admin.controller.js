@@ -2,7 +2,7 @@
  * AT SSO UI - AT Admin Controller.
  * Copyright 2021 AgileThought, Inc.
  *
- * General functions for admin-controller.
+ * General functions for admin-controller.js
  *
  * @author @at-internship
  * @version 1.0
@@ -152,7 +152,7 @@ ADMIN_CONTROLLER.renderEditUserForm = async (req, res) => {
       console.debug("admin.controller.js - renderEditUserForm -", JSON.stringify(responseUserbyId.data));
     }
   } catch (err) {
-    console.err(err.message);
+    console.err("admin.controller.js - renderEditUserForm -", err.message);
   } finally {
     res.render("admin/user/edit-user", { user });
   }
@@ -164,7 +164,7 @@ ADMIN_CONTROLLER.updateUser = async (req, res) => {
 
   const user_id = req.params.id;
   console.debug("admin.controller.js - updateUser - user id-->" + user_id);
-
+  
   if (!user_id) {
     req.flash("error_msg", "User Not Authorized");
     return res.redirect("/admin/user");

@@ -1,4 +1,4 @@
-# Node JS Project for AT SSO UI (Internal app) 
+# Node JS Project for AT SSO UI (Single sign-on app) 
 
 at-sso-ui app, is one of the 3 projects of this internship program, which is in charge of sso auth.
 
